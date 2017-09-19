@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/cruz82/jsev/issues"
   },
-  "homepage": "https://github.com/cruz82/jsev#readme"
+  "homepage": "https://github.com/cruz82/jsev#readme",
+  "dependencies": {
+    "winston": "^2.3.1"
+  }
 }
