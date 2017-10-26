@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const path = require('path');
 
 function loadConfiguration(env, cfgPath) {
@@ -19,7 +20,7 @@ function loadConfiguration(env, cfgPath) {
         env.log.warn(`Environment configuration ${envCfgName} not found`);
     }
 
-    return Object.assign({}, cfg, envCfg);
+    return _.merge(cfg, envCfg);
 }
 
 module.exports = loadConfiguration;
