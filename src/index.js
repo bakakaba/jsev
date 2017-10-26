@@ -1,37 +1,36 @@
 const Koa = require('koa');
 const Router = require('koa-router');
-const bunyan = require('bunyan');
-const PrettyStream = require('bunyan-prettystream');
+const path = require('path');
 
-const pkg = require('../package');
+const { logger } = require('./logging');
+const configurator = require('./utilities/configurator');
 
-const logStream = new PrettyStream();
-logStream.pipe(process.stdout);
+class Environment {
+    constructor(name) {
+        this.name = name;
+        this.log = logger(this.name);
+        this.app = new Koa();
+        this.router = new Router();
 
-const log = bunyan.createLogger({
-    name: pkg.name,
-    streams: [{
-        level: 'debug',
-        type: 'raw',
-        stream: logStream
-    }]
-});
+        const callerPath = path.dirname(module.parent.filename);
+        this.cfg = configurator(callerPath);
+    }
 
-const app = new Koa();
-const router = new Router();
+    get port() {
+        if (!this.cfg.port) {
+            throw 'Port has not been specified in the configuration.';
+        }
 
-function init() {
-    log.info('init');
+        return this.cfg.port;
+    }
+
+    run() {
+        const port = this.port;
+
+        this.app.use(this.router.routes());
+        this.app.listen(port);
+        this.log.info(`Listening on port ${port}`);
+    }
 }
 
-function run() {
-    log.info('run');
-    app.use(router.routes());
-    app.listen(4000);
-    log.info({abc: 123, xyz: '456'}, '%s running', {test: 'hello'});
-}
-
-module.exports = {
-    init,
-    run,
-};
+module.exports = Environment;

@@ -1,4 +1,4 @@
-const jsev = require('./src');
+const Env = require('./src');
 
-jsev.init();
-jsev.run();
+const env = new Env('app');
+env.run();
