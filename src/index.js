@@ -27,7 +27,6 @@ class Environment {
     run() {
         const port = this.port;
 
-        this.app.use(this.router.routes());
         this.app.listen(port);
         this.log.info(`Listening on port ${port}`);
     }
