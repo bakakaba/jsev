@@ -3,7 +3,7 @@ env:
   commonjs: true
   es6: true
   node: true
-extends: 'eslint:recommended'
+extends: 'eslint:all'
 parserOptions:
   ecmaFeatures:
     experimentalObjectRestSpread: true
@@ -12,17 +12,50 @@ parserOptions:
 plugins:
   - react
 rules:
+  class-methods-use-this:
+    - warn
+  comma-dangle:
+    - error
+    - always
+  func-style:
+    - warn
+    - declaration
+  id-length:
+    - off
   indent:
     - error
     - 4
   linebreak-style:
     - error
     - unix
+  max-len:
+    - warn
+    - 120
+  max-statements:
+    - warn
+    - 30
+  no-magic-numbers:
+    - off
+  no-ternary:
+    - off
+  no-var:
+    - warn
+  object-curly-spacing:
+    - error
+    - always
+  one-var:
+    - off
+  padded-blocks:
+    - error
+    - never
+  quote-props:
+    - error
+    - as-needed
   quotes:
     - error
     - single
+  require-jsdoc:
+    - off
   semi:
     - error
     - always
-  no-var:
-    - warn
