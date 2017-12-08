@@ -1,13 +1,13 @@
 const Koa = require('koa');
 const Router = require('koa-router');
 const path = require('path');
-const { assert } = require('chai');
+const { assert, } = require('chai');
 
-const { logger } = require('./logging');
+const { logger, } = require('./logging');
 const configurator = require('./utilities/configurator');
 
 class Environment {
-    constructor(name) {
+    constructor (name) {
         assert.exists(name);
 
         this.name = name;
@@ -19,19 +19,17 @@ class Environment {
         this.cfg = configurator(this, callerPath);
     }
 
-    get port() {
+    get port () {
         if (!this.cfg.port) {
-            throw 'Port has not been specified in the configuration.';
+            throw new Error('Port has not been specified in the configuration.');
         }
 
         return this.cfg.port;
     }
 
-    run() {
-        const port = this.port;
-
-        this.app.listen(port);
-        this.log.info(`Listening on port ${port}`);
+    run () {
+        this.app.listen(this.port);
+        this.log.info(`Listening on port ${this.port}`);
     }
 }
 

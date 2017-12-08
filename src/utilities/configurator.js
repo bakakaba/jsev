@@ -1,7 +1,8 @@
+/* eslint-disable global-require, no-process-env */
 const _ = require('lodash');
 const path = require('path');
 
-function loadConfiguration(env, cfgPath) {
+function loadConfiguration (env, cfgPath) {
     const cfg = require(path.join(cfgPath, 'config.js'));
 
     const envName = process.env.NODE_ENV;
@@ -9,6 +10,7 @@ function loadConfiguration(env, cfgPath) {
         return cfg;
     }
 
+    cfg.env = envName;
     const envCfgName = `config.${envName}.js`;
     let envCfg = {};
     try {
