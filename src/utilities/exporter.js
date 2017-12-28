@@ -7,12 +7,12 @@ const jsExtensions = [
     '.jsx',
 ];
 
-function appendProperty (obj, propName, value) {
+function appendProperty(obj, propName, value) {
     obj[propName] = value;
     return obj;
 }
 
-function exportModules () {
+function exportModules() {
     const callerPath = path.dirname(module.parent.filename);
     const files = fs.
         readdirSync(callerPath).
@@ -25,4 +25,4 @@ function exportModules () {
     return modules;
 }
 
-module.exports = { exportModules, };
+module.exports = { exportModules };

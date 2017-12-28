@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { Stream, } = require('stream');
+const { Stream } = require('stream');
 const util = require('util');
 const chalk = require('chalk');
 const bunyan = require('bunyan');
@@ -24,7 +24,7 @@ const defaultOptions = {
 };
 
 class ConsoleStream extends Stream {
-    constructor (opts) {
+    constructor(opts) {
         super();
 
         this.opts = Object.assign({}, defaultOptions, opts);
@@ -33,18 +33,18 @@ class ConsoleStream extends Stream {
         this.pipe(process.stdout);
     }
 
-    getDetails (data) {
+    getDetails(data) {
         const details = _.omit(data, this.opts.omitFromDetails);
         const output = details && Object.keys(details).length > 0
-            ? util.inspect(details, { colors: true, })
+            ? util.inspect(details, { colors: true })
             : '';
 
         return chalk.cyan(output);
     }
 
     // eslint-disable-next-line class-methods-use-this
-    getMessage (data) {
-        const { msg, level: lvl, } = data;
+    getMessage(data) {
+        const { msg, level: lvl } = data;
 
         if (lvl >= bunyan.FATAL) {
             return chalk.bgRed.white(msg);
@@ -63,7 +63,7 @@ class ConsoleStream extends Stream {
         return msg;
     }
 
-    format (data) {
+    format(data) {
         const pid = chalk.gray(data.pid);
         const time = data.time.toISOString();
         const msg = this.getMessage(data);
@@ -72,7 +72,7 @@ class ConsoleStream extends Stream {
         return `[${time} ${pid}] ${msg} ${details}\n`;
     }
 
-    write (data) {
+    write(data) {
         const dataObj = typeof data === 'string'
             ? JSON.parse(data)
             : data;
@@ -83,7 +83,7 @@ class ConsoleStream extends Stream {
         return true;
     }
 
-    end () {
+    end() {
         this.emit('end');
         return true;
     }

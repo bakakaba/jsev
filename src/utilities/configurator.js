@@ -2,7 +2,7 @@
 const _ = require('lodash');
 const path = require('path');
 
-function loadConfiguration (env, cfgPath) {
+function loadConfiguration(env, cfgPath) {
     const cfg = require(path.join(cfgPath, 'config.js'));
 
     const envName = process.env.NODE_ENV;

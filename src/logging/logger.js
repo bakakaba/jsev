@@ -2,7 +2,7 @@ const bunyan = require('bunyan');
 
 const ConsoleStream = require('./consoleStream');
 
-function createLogger (appName) {
+function createLogger(appName) {
     return bunyan.createLogger({
         level: bunyan.TRACE,
         name: appName,

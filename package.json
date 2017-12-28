@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "clean": "rm -rf node_modules && rm package-lock.json",
-    "test": "eslint src && node test",
+    "test": "eslint src",
+    "fix": "eslint --fix src",
     "start": "NODE_ENV=local node app"
   },
   "repository": {
@@ -27,13 +28,14 @@
     "bunyan-prettystream": "^0.1.3",
     "chai": "^4.1.2",
     "chalk": "^2.3.0",
-    "graphql": "^0.11.7",
+    "graphql": "^0.11.0",
     "koa": "^2.4.1",
     "koa-graphql": "^0.7.3",
     "koa-router": "^7.3.0"
   },
   "devDependencies": {
-    "eslint": "^4.12.1",
-    "eslint-plugin-react": "^7.5.1"
+    "eslint": "^4.14.0",
+    "eslint-plugin-react": "^7.5.1",
+    "jsev-dev": "0.0.6"
   }
 }
