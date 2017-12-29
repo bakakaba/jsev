@@ -47,17 +47,17 @@ class ConsoleStream extends Stream {
         const { msg, level: lvl } = data;
 
         if (lvl >= bunyan.FATAL) {
-            return chalk.bgRed.white(msg);
+            return chalk.bgRed.white(`FTL: ${msg}`);
         } else if (lvl >= bunyan.ERROR) {
-            return chalk.red(msg);
+            return chalk.red(`ERR: ${msg}`);
         } else if (lvl >= bunyan.WARN) {
-            return chalk.yellow(msg);
+            return chalk.yellow(`WRN: ${msg}`);
         } else if (lvl >= bunyan.INFO) {
-            return chalk.white(msg);
+            return chalk.white(`INF: ${msg}`);
         } else if (lvl >= bunyan.DEBUG) {
-            return chalk.gray(msg);
+            return chalk.gray(`DBG: ${msg}`);
         } else if (lvl >= bunyan.TRACE) {
-            return chalk.green(msg);
+            return chalk.green(`TRC: ${msg}`);
         }
 
         return msg;

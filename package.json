@@ -8,7 +8,7 @@
     "clean": "rm -rf node_modules && rm package-lock.json",
     "test": "eslint src && nyc node test",
     "fix": "eslint --fix src",
-    "start": "NODE_ENV=local node app"
+    "start": "NODE_ENV=local nodemon app.js"
   },
   "config": {
     "output_path": "output"
@@ -37,7 +37,8 @@
     "graphql": "^0.11.0",
     "koa": "^2.4.1",
     "koa-graphql": "^0.7.3",
-    "koa-router": "^7.3.0"
+    "koa-router": "^7.3.0",
+    "nodemon": "^1.14.3"
   },
   "devDependencies": {
     "jsev-dev": "0.0.8"
