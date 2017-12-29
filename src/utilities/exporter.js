@@ -12,11 +12,11 @@ function appendProperty(obj, propName, value) {
     return obj;
 }
 
-function exportModules() {
-    const callerPath = path.dirname(module.parent.filename);
+function exportModules(exportPath) {
+    const normalizedExportPath = path.normalize(exportPath);
     const files = fs.
-        readdirSync(callerPath).
-        map((f) => path.parse(`${callerPath}/${f}`)).
+        readdirSync(normalizedExportPath).
+        map((f) => path.parse(`${normalizedExportPath}/${f}`)).
         filter((f) => f.name !== 'index' && jsExtensions.includes(f.ext));
 
     const modules = files.
@@ -25,4 +25,6 @@ function exportModules() {
     return modules;
 }
 
-module.exports = { exportModules };
+module.exports = {
+    exportModules,
+};

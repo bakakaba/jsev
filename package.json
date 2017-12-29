@@ -4,10 +4,14 @@
   "description": "Base environment for building javascript applications.",
   "main": "src/index.js",
   "scripts": {
+    "clean-output": "rm -rf .nyc_output && rm -rf output",
     "clean": "rm -rf node_modules && rm package-lock.json",
-    "test": "eslint src",
+    "test": "eslint src && nyc node test",
     "fix": "eslint --fix src",
     "start": "NODE_ENV=local node app"
+  },
+  "config": {
+    "output_path": "output"
   },
   "repository": {
     "type": "git",
@@ -24,6 +28,8 @@
   },
   "homepage": "https://github.com/cruz82/jsev#readme",
   "dependencies": {
+    "@koa/cors": "^2.2.1",
+    "app-module-path": "^2.2.0",
     "bunyan": "^1.8.12",
     "bunyan-prettystream": "^0.1.3",
     "chai": "^4.1.2",
@@ -34,8 +40,17 @@
     "koa-router": "^7.3.0"
   },
   "devDependencies": {
-    "eslint": "^4.14.0",
-    "eslint-plugin-react": "^7.5.1",
-    "jsev-dev": "0.0.6"
+    "jsev-dev": "0.0.8"
+  },
+  "nyc": {
+    "all": true,
+    "include": [
+      "src/**/*.js"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "report-dir": "./output/coverage"
   }
 }

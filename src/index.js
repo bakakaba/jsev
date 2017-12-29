@@ -5,6 +5,7 @@ const { assert } = require('chai');
 
 const { logger } = require('./logging');
 const configurator = require('./utilities/configurator');
+const middlewares = require('./middlewares');
 
 class Environment {
     constructor(name) {
@@ -14,6 +15,7 @@ class Environment {
         this.log = logger(this.name);
         this.app = new Koa();
         this.router = new Router();
+        this.middlewares = middlewares;
 
         const callerPath = path.dirname(module.parent.filename);
         this.cfg = configurator(this, callerPath);
