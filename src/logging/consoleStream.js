@@ -23,6 +23,7 @@ const defaultOptions = {
         'req',
         'res',
         'req_id',
+        'table',
     ],
 };
 
@@ -66,15 +67,70 @@ class ConsoleStream extends Stream {
         return msg;
     }
 
+    getTable(data) {
+        const { table } = data;
+        if (!table) {
+            return '';
+        }
+
+        const widths = [];
+        const padDirections = [];
+        for (let i = 0; i < table.header.length; i++) {
+            let dir = 0;
+            const len = table.rows.reduce((a, x) => {
+                const cLen = x[i].toString().length;
+                if (!dir) {
+                    dir = isNaN(Number(x[i])) ? 1 : -1;
+                }
+
+                return a > cLen ? a : cLen;
+            }, table.header[i].length);
+
+            widths.push(len);
+            padDirections.push(dir);
+        }
+
+        const tWidth = widths.reduce((a, x) => a + x + 2, 1);
+        const header = table.header
+            .reduce((a, x, i) => `${a} ${chalk.bold.green(x.toString().padEnd(widths[i]))} |`, '|');
+
+        const rows = table.rows
+            .reduce((ra, row, ri) => {
+                const r = row.reduce((a, x, i) => {
+                    let c = x;
+                    if (isNaN(Number(x))) {
+                        c = c.toString().padEnd(widths[i]);
+                    } else {
+                        c = chalk.magenta(c.toString().padStart(widths[i]));
+                    }
+                    return `${a} ${c} |`;
+                }, '|');
+
+                const startRow = ri === 0 ? '\t' : '\n\t';
+                return `${ra}${startRow}${r}`;
+            }, '');
+
+        const str = `
+\t+${'-'.repeat(tWidth)}+
+\t${header}
+\t+${'-'.repeat(tWidth)}+
+${rows}
+\t+${'-'.repeat(tWidth)}+
+`;
+
+        return str;
+    }
+
     format(data) {
         const pid = chalk.gray(data.pid);
         const reqId = data.req_id ? ` ${chalk.cyan(data.req_id)}` : '';
         const time = data.time.toISOString();
         const msg = this.getMessage(data);
         const details = this.getDetails(data);
+        const table = this.getTable(data);
 
 
-        return `[${time} ${pid + reqId}] ${msg} ${details}\n`;
+        return `[${time} ${pid + reqId}] ${msg}${table} ${details}\n`;
     }
 
     write(data) {

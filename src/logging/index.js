@@ -1,3 +1,6 @@
 const logger = require('./logger');
 
-module.exports = { logger };
+module.exports = {
+    loadLogger: logger,
+    logger,
+};

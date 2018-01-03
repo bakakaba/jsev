@@ -9,7 +9,7 @@ async function handler(ctx, next) {
     const log = ctx.env.log.child({ req_id: reqId }, true);
     ctx.log = log;
 
-    log.info(`Request for ${ctx.URL.href}`);
+    log.info({ req: ctx.req }, `Request for ${ctx.URL.href}`);
     log.debug(`Request headers ${JSON.stringify(ctx.request.header)}`);
 
     await next();
@@ -18,7 +18,7 @@ async function handler(ctx, next) {
     const responseTimeStr = responseTime
         ? ` in ${responseTime}`
         : '';
-    log.info(`Request for ${ctx.URL.href} completed${responseTimeStr}`);
+    log.info({ res: ctx.res }, `Request for ${ctx.URL.href} completed${responseTimeStr}`);
 }
 
 module.exports = {

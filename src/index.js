@@ -3,25 +3,25 @@ const Router = require('koa-router');
 const path = require('path');
 const { assert } = require('chai');
 
-const { logger } = require('./logging');
-const configurator = require('./utilities/configurator');
-const middlewares = require('./middlewares');
+const { loadLogger } = require('./logging');
+const { loadConfiguration } = require('./utilities/configurator');
+const { loadMiddlewares, applyMiddlewares } = require('./middlewares');
 
 class Environment {
     constructor(name) {
         assert.exists(name);
 
+        this.name = name;
         this.app = new Koa();
         this.app.context.env = this;
 
-        this.name = name;
-        this.log = logger(this.name);
+        const callerPath = path.dirname(module.parent.filename);
+        this.cfg = loadConfiguration(callerPath);
+
+        loadLogger(this);
+        loadMiddlewares(this);
 
         this.router = new Router();
-        this.middlewares = middlewares;
-
-        const callerPath = path.dirname(module.parent.filename);
-        this.cfg = configurator(this, callerPath);
     }
 
     get port() {
@@ -40,7 +40,7 @@ class Environment {
     }
 
     run() {
-        this.middlewares.applyMiddlewares(this);
+        applyMiddlewares(this);
         this.app.listen(this.port);
         this.log.info(`Listening on port ${this.port}`);
     }

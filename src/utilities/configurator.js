@@ -1,8 +1,9 @@
-/* eslint-disable global-require, no-process-env */
+/* Use console logging in here because we need to load the configuration before the logging module is usable */
+/* eslint-disable global-require, no-process-env, no-console */
 const _ = require('lodash');
 const path = require('path');
 
-function loadConfiguration(env, cfgPath) {
+function loadConfiguration(cfgPath) {
     const cfg = require(path.join(cfgPath, 'config.js'));
 
     const envName = process.env.NODE_ENV;
@@ -19,10 +20,12 @@ function loadConfiguration(env, cfgPath) {
         if (err.code !== 'MODULE_NOT_FOUND') {
             throw err;
         }
-        env.log.warn(`Environment configuration ${envCfgName} not found`);
+        console.warn(`Environment configuration ${envCfgName} not found`);
     }
 
     return _.merge(cfg, envCfg);
 }
 
-module.exports = loadConfiguration;
+module.exports = {
+    loadConfiguration,
+};
