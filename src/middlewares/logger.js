@@ -1,9 +1,12 @@
 const shortId = require('shortid');
 
 async function handler(ctx, next) {
+    const reqId = shortId.generate();
+    ctx.set('X-Request-Id', reqId);
+
     // Using snake_case for req_id as per Koa's recommendation
     // eslint-disable-next-line camelcase
-    const log = ctx.env.log.child({ req_id: shortId.generate() }, true);
+    const log = ctx.env.log.child({ req_id: reqId }, true);
     ctx.log = log;
 
     log.info(`Request for ${ctx.URL.href}`);
