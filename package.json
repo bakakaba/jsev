@@ -38,10 +38,11 @@
     "koa": "^2.4.1",
     "koa-graphql": "^0.7.3",
     "koa-router": "^7.3.0",
-    "nodemon": "^1.14.3"
+    "nodemon": "^1.14.3",
+    "shortid": "^2.2.8"
   },
   "devDependencies": {
-    "jsev-dev": "0.0.8"
+    "jsev-dev": "0.0.9"
   },
   "nyc": {
     "all": true,

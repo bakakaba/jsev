@@ -1,1 +1,7 @@
 extends: './node_modules/jsev-dev/.eslintrc.yml'
+rules:
+  callback-return:
+    - off
+  multiline-ternary:
+    - error
+    - always-multiline

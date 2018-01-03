@@ -1,3 +1,10 @@
 const exporter = require('./exporter');
 
-module.exports = exporter.exportModules(__dirname);
+function isObject(obj) {
+    return obj instanceof Object && obj.constructor === Object;
+}
+
+module.exports = {
+    ...exporter.exportModules(__dirname),
+    isObject,
+};

@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+
 const _ = require('lodash');
 const { Stream } = require('stream');
 const util = require('util');
@@ -20,6 +22,7 @@ const defaultOptions = {
         'client_res',
         'req',
         'res',
+        'req_id',
     ],
 };
 
@@ -42,7 +45,7 @@ class ConsoleStream extends Stream {
         return chalk.cyan(output);
     }
 
-    // eslint-disable-next-line class-methods-use-this
+
     getMessage(data) {
         const { msg, level: lvl } = data;
 
@@ -65,11 +68,13 @@ class ConsoleStream extends Stream {
 
     format(data) {
         const pid = chalk.gray(data.pid);
+        const reqId = data.req_id ? ` ${chalk.cyan(data.req_id)}` : '';
         const time = data.time.toISOString();
         const msg = this.getMessage(data);
         const details = this.getDetails(data);
 
-        return `[${time} ${pid}] ${msg} ${details}\n`;
+
+        return `[${time} ${pid + reqId}] ${msg} ${details}\n`;
     }
 
     write(data) {
