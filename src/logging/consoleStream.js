@@ -53,7 +53,7 @@ class ConsoleStream extends Stream {
         if (lvl >= bunyan.FATAL) {
             return chalk.bgRed.white(`FTL: ${msg}`);
         } else if (lvl >= bunyan.ERROR) {
-            return chalk.red(`ERR: ${msg}`);
+            return chalk.redBright(`ERR: ${msg}`);
         } else if (lvl >= bunyan.WARN) {
             return chalk.yellow(`WRN: ${msg}`);
         } else if (lvl >= bunyan.INFO) {
@@ -121,6 +121,12 @@ ${rows}
         return str;
     }
 
+    getError(data) {
+        return data.err
+            ? chalk.red(`\n${data.err.stack}`)
+            : '';
+    }
+
     format(data) {
         const pid = chalk.gray(data.pid);
         const reqId = data.req_id ? ` ${chalk.cyan(data.req_id)}` : '';
@@ -128,9 +134,10 @@ ${rows}
         const msg = this.getMessage(data);
         const details = this.getDetails(data);
         const table = this.getTable(data);
+        const error = this.getError(data);
 
 
-        return `[${time} ${pid + reqId}] ${msg}${table} ${details}\n`;
+        return `[${time} ${pid + reqId}] ${msg}${table}${error} ${details}\n`;
     }
 
     write(data) {

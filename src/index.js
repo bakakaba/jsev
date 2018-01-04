@@ -6,6 +6,7 @@ const { assert } = require('chai');
 const { loadLogger } = require('./logging');
 const { loadConfiguration } = require('./utilities/configurator');
 const { loadMiddlewares, applyMiddlewares } = require('./middlewares');
+const { loadRaygun } = require('./external/raygun');
 
 class Environment {
     constructor(name) {
@@ -20,8 +21,15 @@ class Environment {
 
         loadLogger(this);
         loadMiddlewares(this);
+        loadRaygun(this);
 
         this.router = new Router();
+        this.app.on('error', (err) => {
+            this.log.fatal(err);
+
+            // eslint-disable-next-line no-empty-function
+            this.raygun.send(err, {}, () => {}, this.app.context.request, ['fatal']);
+        });
     }
 
     get port() {

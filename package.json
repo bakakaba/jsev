@@ -40,6 +40,7 @@
     "koa-graphql": "^0.7.3",
     "koa-router": "^7.3.0",
     "nodemon": "^1.14.3",
+    "raygun": "^0.9.1",
     "shortid": "^2.2.8"
   },
   "devDependencies": {

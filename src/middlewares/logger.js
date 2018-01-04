@@ -12,7 +12,16 @@ async function handler(ctx, next) {
     log.info({ req: ctx.req }, `Request for ${ctx.URL.href}`);
     log.debug(`Request headers ${JSON.stringify(ctx.request.header)}`);
 
-    await next();
+    try {
+        await next();
+    } catch (err) {
+        log.error(err);
+        const res = ctx.response;
+        if (res.status !== 500) {
+            res.status = 500;
+            res.body = err.message;
+        }
+    }
 
     const responseTime = ctx.response.headers['x-response-time'];
     const responseTimeStr = responseTime

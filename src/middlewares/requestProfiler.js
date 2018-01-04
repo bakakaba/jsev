@@ -1,9 +1,12 @@
 module.exports = {
     func: async (ctx, next) => {
         const start = Date.now();
-        await next();
-        const ms = Date.now() - start;
-        ctx.set('X-Response-Time', `${ms}ms`);
+        try {
+            await next();
+        } finally {
+            const ms = Date.now() - start;
+            ctx.set('X-Response-Time', `${ms}ms`);
+        }
     },
-    rank: 2,
+    rank: 10,
 };
