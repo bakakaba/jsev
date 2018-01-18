@@ -51,13 +51,6 @@ class Environment {
         return this.cfg.port;
     }
 
-    setEndpointHandler(handler) {
-        this.middlewares.endpoint = {
-            func: handler,
-            rank: 999,
-        };
-    }
-
     run() {
         this.loadServices();
         applyMiddlewares(this);

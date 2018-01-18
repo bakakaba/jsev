@@ -137,7 +137,7 @@ ${rows}
         const error = this.getError(data);
 
 
-        return `[${time} ${pid + reqId}] ${msg}${table}${error} ${details}\n`;
+        return `[${time} ${pid + reqId}] ${msg}${table}${error} ${details}`;
     }
 
     write(data) {
@@ -146,13 +146,19 @@ ${rows}
             : data;
 
         const output = this.format(dataObj);
-        this.emit('data', output);
 
-        return true;
-    }
+        /* eslint-disable no-console */
+        if (data.level < bunyan.INFO) {
+            console.log(output);
+        } else if (data.level < bunyan.WARN) {
+            console.info(output);
+        } else if (data.level < bunyan.ERROR) {
+            console.warn(output);
+        } else {
+            console.error(output);
+        }
+        /* eslint-enable no-console */
 
-    end() {
-        this.emit('end');
         return true;
     }
 }

@@ -18,12 +18,13 @@ function createLogger(env) {
         });
     }
 
-    env.log = bunyan.createLogger({
-        level: bunyan.TRACE,
+    const cfg = Object.assign({
+        level: bunyan.INFO,
         name: env.name,
         serializers: bunyan.stdSerializers,
         streams,
-    });
+    }, env.cfg.logger);
+    env.log = bunyan.createLogger(cfg);
 
     return env.log;
 }

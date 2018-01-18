@@ -1,8 +1,12 @@
 const Env = require('./src');
 
 const env = new Env('app');
-env.setEndpointHandler((ctx) => {
-    ctx.body = 'hello world!!';
-});
+
+env.middlewares.endpoint = {
+    func: (ctx) => {
+        ctx.body = 'hello world!!';
+    },
+    rank: 99,
+};
 
 env.run();

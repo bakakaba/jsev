@@ -1,4 +1,10 @@
 module.exports = {
+    jwt: {
+        secret: 'Super secret agent man!',
+    },
+    logger: {
+        level: 'trace',
+    },
     port: 5000,
     raygun: {
         apiKey: '2o2ZbCaFpbHLry4mJfZtaQ==',

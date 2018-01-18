@@ -1,7 +1,7 @@
 const shortId = require('shortid');
 
 async function handler(ctx, next) {
-    const reqId = shortId.generate();
+    const reqId = ctx.request.headers['x-response-time'] || shortId.generate();
     ctx.set('X-Request-Id', reqId);
 
     // Using snake_case for req_id as per Koa's recommendation
