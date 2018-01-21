@@ -1,6 +1,6 @@
-const Env = require('./src');
+const { Environment } = require('./src');
 
-const env = new Env('app');
+const env = new Environment('app');
 
 env.middlewares.endpoint = {
     func: (ctx) => {

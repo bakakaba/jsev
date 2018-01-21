@@ -4,9 +4,9 @@ const path = require('path');
 const { assert } = require('chai');
 
 const { loadLogger } = require('./logging');
-const { loadConfiguration } = require('./utilities/configurator');
 const { loadMiddlewares, applyMiddlewares } = require('./middlewares');
 const services = require('./services');
+const utilities = require('./utilities');
 
 class Environment {
     constructor(name) {
@@ -18,6 +18,7 @@ class Environment {
         this.ctx = this.app.context;
 
         const callerPath = path.dirname(module.parent.filename);
+        const { loadConfiguration } = utilities.configurator;
         this.cfg = loadConfiguration(callerPath);
 
         loadLogger(this);
@@ -60,4 +61,7 @@ class Environment {
     }
 }
 
-module.exports = Environment;
+module.exports = {
+    Environment,
+    utilities,
+};
