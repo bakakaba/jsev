@@ -26,12 +26,7 @@ function applyMiddlewares(env) {
         .map((x) => Object.assign({}, x[1], { name: x[0] }))
         .sort((a, b) => a.rank - b.rank);
 
-    middlewares.forEach((x) => {
-        const m = env.app.use(x.func);
-        if (x.unless) {
-            m.unless(m);
-        }
-    });
+    middlewares.forEach((x) => env.app.use(x.func));
 
     env.log.info({ table: convertToTable(middlewares) }, 'Loaded middlewares');
 }
