@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = () => ({
     func: async (ctx, next) => {
         const start = Date.now();
         try {
@@ -9,4 +9,4 @@ module.exports = {
         }
     },
     rank: 10,
-};
+});

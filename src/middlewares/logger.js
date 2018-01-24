@@ -30,7 +30,7 @@ async function handler(ctx, next) {
     log.info({ res: ctx.res }, `Request for ${ctx.URL.href} completed${responseTimeStr}`);
 }
 
-module.exports = {
+module.exports = () => ({
     func: handler,
     rank: 1,
-};
+});

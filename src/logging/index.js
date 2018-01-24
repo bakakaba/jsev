@@ -1,6 +1,3 @@
-const logger = require('./logger');
+const { exporter } = require('../utilities');
 
-module.exports = {
-    loadLogger: logger,
-    logger,
-};
+module.exports = exporter.exportModules(__dirname);

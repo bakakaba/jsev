@@ -3,9 +3,8 @@ const Router = require('koa-router');
 const path = require('path');
 const { assert } = require('chai');
 
-const { loadLogger } = require('./logging');
-const { loadMiddlewares, applyMiddlewares } = require('./middlewares');
-const services = require('./services');
+const { Logger } = require('./logging');
+const { defaultMiddlewares, applyMiddlewares } = require('./middlewares');
 const utilities = require('./utilities');
 
 class Environment {
@@ -15,32 +14,21 @@ class Environment {
         this.name = name;
         this.app = new Koa();
         this.app.context.env = this;
-        this.ctx = this.app.context;
 
         const callerPath = path.dirname(module.parent.filename);
-        const { loadConfiguration } = utilities.configurator;
-        this.cfg = loadConfiguration(callerPath);
+        this.cfg = utilities.configurator.loadConfiguration(callerPath);
 
-        loadLogger(this);
-        loadMiddlewares(this);
-
-        this.services = services;
+        this.log = new Logger(this);
+        this.middlewares = defaultMiddlewares;
 
         this.router = new Router();
         this.app.on('error', (err) => {
             this.log.fatal(err);
 
-            // eslint-disable-next-line no-empty-function
-            this.raygun.send(err, {}, () => {}, this.app.context.request, ['fatal']);
-        });
-    }
-
-    loadServices() {
-        const svcKeys = Object.keys(this.services);
-        this.ctx.services = {};
-        svcKeys.forEach((k) => {
-            this.log.debug(`Loading service ${k}`);
-            this.ctx.services[k] = services[k].load(this);
+            if (this.raygun) {
+                // eslint-disable-next-line no-empty-function
+                this.raygun.send(err, {}, () => {}, this.app.context.request, ['fatal']);
+            }
         });
     }
 
@@ -53,7 +41,6 @@ class Environment {
     }
 
     run() {
-        this.loadServices();
         applyMiddlewares(this);
 
         this.app.listen(this.port);

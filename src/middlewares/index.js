@@ -1,18 +1,14 @@
-const { exporter, isObject } = require('../utilities');
+const { exporter, isFunction } = require('../utilities');
 
-const builtinMiddlewares = exporter.exportModules(__dirname);
+const defaultMiddlewares = exporter.exportModules(__dirname);
 
-function loadMiddlewares(env) {
-    env.middlewares = builtinMiddlewares;
-}
-
-function convertToTable(middlewares) {
+function convertToTable(middlewareList) {
     const table = {
         header: ['Rank', 'Middleware'],
         rows: [],
     };
 
-    middlewares.forEach((x) => {
+    middlewareList.forEach((x) => {
         const { name, rank } = x;
         table.rows.push([rank, name]);
     });
@@ -20,19 +16,32 @@ function convertToTable(middlewares) {
     return table;
 }
 
+function convertMiddlewareToListItem(env, name, middleware) {
+    if (!isFunction(middleware)) {
+        return null;
+    }
+
+    const m = middleware(env);
+    if (!m) {
+        return null;
+    }
+
+    return Object.assign({ name }, m);
+}
+
 function applyMiddlewares(env) {
-    const middlewares = Object.entries(env.middlewares || builtinMiddlewares)
-        .filter((x) => isObject(x[1]))
-        .map((x) => Object.assign({}, x[1], { name: x[0] }))
+    const { app, middlewares, log } = env;
+    const middlewareList = Object.entries(middlewares)
+        .map((x) => convertMiddlewareToListItem(env, x[0], x[1]))
+        .filter((x) => x)
         .sort((a, b) => a.rank - b.rank);
 
-    middlewares.forEach((x) => env.app.use(x.func));
+    middlewareList.forEach((x) => app.use(x.func));
 
-    env.log.info({ table: convertToTable(middlewares) }, 'Loaded middlewares');
+    log.info({ table: convertToTable(middlewareList) }, `Loaded ${middlewareList.length} middlewares`);
 }
 
 module.exports = {
     applyMiddlewares,
-    builtinMiddlewares,
-    loadMiddlewares,
+    defaultMiddlewares,
 };
