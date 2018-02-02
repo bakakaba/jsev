@@ -5,10 +5,14 @@ module.exports = (env) => {
         return null;
     }
 
-    const cfg = env.cfg.jwt;
+    let cfg = env.cfg.jwt;
     if (cfg.secret) {
         if (typeof cfg.secret === 'string') {
-            cfg.secret = Buffer.from(cfg.secret, 'base64');
+            const secret = Buffer.from(cfg.secret, 'base64');
+            cfg = {
+                ...cfg,
+                secret,
+            };
         } else if (cfg.secret instanceof Array) {
             cfg.secret = Buffer.from(cfg.secret);
         }
