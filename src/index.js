@@ -44,7 +44,7 @@ class Environment {
         applyMiddlewares(this);
 
         this.app.listen(this.port);
-        this.log.info(`Listening on port ${this.port}`);
+        this.log.info(`Listening on port ${this.port} (${this.cfg.env})`);
     }
 }
 
