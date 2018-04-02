@@ -1,6 +1,6 @@
 {
   "name": "jsev",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Base environment for building javascript applications.",
   "main": "src/index.js",
   "scripts": {
