@@ -1,15 +1,9 @@
-const exporter = require('./exporter');
+const { exportModules } = require('./exporter');
 
-function isObject(obj) {
-    return obj instanceof Object && obj.constructor === Object;
-}
-
-function isFunction(obj) {
-    return typeof obj === 'function';
-}
+const modules = exportModules(__dirname);
 
 module.exports = {
-    ...exporter.exportModules(__dirname),
-    isFunction,
-    isObject,
+    ...modules,
+    isFunction: modules.typeCheck.isFunction,
+    isObject: modules.typeCheck.isObject,
 };

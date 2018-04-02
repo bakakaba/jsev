@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 module.exports = {
     jwt: {
         secret: 'Super secret agent man!',

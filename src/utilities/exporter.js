@@ -14,15 +14,24 @@ function appendProperty(obj, propName, value) {
 
 function exportModules(exportPath) {
     const normalizedExportPath = path.normalize(exportPath);
-    const files = fs
-        .readdirSync(normalizedExportPath)
-        .map((f) => path.parse(`${normalizedExportPath}/${f}`))
-        .filter((f) => f.name !== 'index' && jsExtensions.includes(f.ext));
+    const directoryContents = fs.readdirSync(normalizedExportPath);
 
-    const modules = files
+    const directoryModules = directoryContents
+        .filter((x) => fs.lstatSync(`${exportPath}/${x}`).isDirectory())
+        .reduce((a, x) => {
+            a[x] = require(`${exportPath}/${x}`);
+            return a;
+        }, {});
+
+    const fileModules = directoryContents
+        .map((f) => path.parse(`${normalizedExportPath}/${f}`))
+        .filter((f) => f.name !== 'index' && jsExtensions.includes(f.ext))
         .reduce((a, x) => appendProperty(a, x.name, require(path.format(x))), {});
 
-    return modules;
+    return {
+        ...directoryModules,
+        ...fileModules,
+    };
 }
 
 module.exports = {

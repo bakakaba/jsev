@@ -14,12 +14,25 @@ module.exports = (env) => {
         }
     }
 
+    let publicRoutes = [/^\/public/, /^\/favicon.ico/];
+    if (cfg.publicRoutes) {
+        publicRoutes = publicRoutes.concat(cfg.publicRoutes);
+    }
+
+    function isPublicRoute(url) {
+        if (publicRoutes.some((x) => !!url.match(x))) {
+            return true;
+        }
+
+        return false;
+    }
+
     const middleware = jwt(cfg);
 
     return {
         func: (ctx, next) => {
             // By convention, we don't authenticate if the route is public and there is no authorization header
-            if (ctx.url.match(/^\/public/) && !ctx.headers.authorization) {
+            if (!ctx.headers.authorization && isPublicRoute(ctx.url)) {
                 return next();
             }
 
