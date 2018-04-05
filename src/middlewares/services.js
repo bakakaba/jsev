@@ -6,9 +6,6 @@ module.exports = (env) => {
     }
 
     const cfg = env.cfg.services;
-    if (!cfg.path) {
-        cfg.path = 'services';
-    }
 
     const { log } = env;
     const serviceModules = exporter.exportModules(cfg.path);
