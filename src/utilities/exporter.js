@@ -25,7 +25,9 @@ function exportModules(exportPath) {
 
     const fileModules = directoryContents
         .map((f) => path.parse(`${normalizedExportPath}/${f}`))
-        .filter((f) => f.name !== 'index' && jsExtensions.includes(f.ext))
+        .filter((f) => f.name !== 'index'
+            && jsExtensions.includes(f.ext)
+            && !f.name.includes('.test'))
         .reduce((a, x) => appendProperty(a, x.name, require(path.format(x))), {});
 
     return {
