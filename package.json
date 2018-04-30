@@ -33,20 +33,20 @@
     "bunyan": "^1.8.12",
     "bunyan-sumologic": "^1.2.0",
     "chai": "^4.1.2",
-    "chalk": "^2.3.2",
+    "chalk": "^2.4.1",
     "change-case": "^3.0.2",
     "graphql": "^0.13.2",
-    "koa": "^2.5.0",
+    "koa": "^2.5.1",
     "koa-graphql": "^0.7.5",
     "koa-jwt": "^3.3.1",
     "koa-router": "^7.4.0",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.10",
     "nodemon": "^1.17.3",
     "raygun": "^0.9.1",
     "shortid": "^2.2.8"
   },
   "devDependencies": {
-    "jsev-dev": "^0.2.0"
+    "jsev-dev": "^0.3.3"
   },
   "nyc": {
     "all": true,
