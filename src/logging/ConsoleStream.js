@@ -25,6 +25,8 @@ const defaultOptions = {
         'req_id',
         'table',
     ],
+    showProcess: true,
+    showTime: true,
 };
 
 class ConsoleStream extends Stream {
@@ -128,16 +130,17 @@ ${rows}
     }
 
     format(data) {
-        const pid = chalk.gray(data.pid);
+        const pid = this.opts.showProcess ? ` ${chalk.gray(data.pid)}` : '';
         const reqId = data.req_id ? ` ${chalk.cyan(data.req_id)}` : '';
-        const time = data.time.toISOString();
+        const time = this.opts.showTime ? data.time.toISOString() : '';
         const msg = this.getMessage(data);
         const details = this.getDetails(data);
         const table = this.getTable(data);
         const error = this.getError(data);
 
+        const info = time + pid + reqId;
 
-        return `[${time} ${pid + reqId}] ${msg}${table}${error} ${details}`;
+        return `[${info.trim()}] ${msg}${table}${error} ${details}`;
     }
 
     write(data) {
