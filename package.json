@@ -1,5 +1,5 @@
 {
-  "name": "jsev",
+  "name": "@crimson-education/jsev",
   "version": "0.7.1",
   "description": "Base environment for building javascript applications.",
   "main": "src/index.js",
