@@ -6,6 +6,7 @@ const { assert } = require('chai');
 const { Logger } = require('./logging');
 const { defaultMiddlewares, applyMiddlewares } = require('./middlewares');
 const utilities = require('./utilities');
+const errors = require('./errors');
 
 class Environment {
     constructor(name) {
@@ -50,5 +51,6 @@ class Environment {
 
 module.exports = {
     Environment,
+    errors,
     utilities,
 };
