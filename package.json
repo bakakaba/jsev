@@ -1,6 +1,6 @@
 {
   "name": "@crimson-education/jsev",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Base environment for building javascript applications.",
   "main": "src/index.js",
   "engines": {

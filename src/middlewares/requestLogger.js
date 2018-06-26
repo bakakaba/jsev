@@ -1,13 +1,21 @@
 const shortId = require('shortid');
 
 const { getPropertyByNameIgnoreCase } = require('../utilities').object;
-const { ValidationError } = require('../errors');
+const { ValidationError, UnauthorizedError } = require('../errors');
 
 function handleError(log, response, error) {
     // Validation errors
     if (error instanceof ValidationError) {
         log.warn(error);
         response.status = 400;
+        response.body = error.message;
+        return;
+    }
+
+    // Unauthorized errors
+    if (error instanceof UnauthorizedError) {
+        log.warn(error);
+        response.status = 401;
         response.body = error.message;
         return;
     }
