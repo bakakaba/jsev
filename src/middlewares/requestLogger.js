@@ -1,11 +1,26 @@
 const shortId = require('shortid');
 
 const { getPropertyByNameIgnoreCase } = require('../utilities').object;
+const { ValidationError } = require('../errors');
+
+function handleError(log, response, error) {
+    // Validation errors
+    if (error instanceof ValidationError) {
+        log.warn(error);
+        response.status = 400;
+        response.body = error.message;
+        return;
+    }
+
+    // Default error case
+    log.error(error);
+    if (response.status !== 500) {
+        response.status = 500;
+        response.body = error.message;
+    }
+}
 
 async function handler(ctx, next) {
-    const cfg = ctx.env.cfg.requestLogger || {};
-
-
     const reqId = getPropertyByNameIgnoreCase(ctx.request.headers, 'X-Request-Id') || shortId.generate();
     ctx.set('X-Request-Id', reqId);
 
@@ -14,32 +29,24 @@ async function handler(ctx, next) {
     const log = ctx.env.log.child({ req_id: reqId }, true);
     ctx.log = log;
 
-    const levelOverrides = cfg.logLevelOverrides || {};
-    const levels = {
-        debug: levelOverrides.debug || 'debug',
-        error: levelOverrides.error || 'error',
-        info: levelOverrides.info || 'info',
-    };
-
-    log[levels.info]({ req: ctx.req }, `Request for ${ctx.URL.href}`);
-    log[levels.debug](`Request headers ${JSON.stringify(ctx.request.header)}`);
+    const { request, response } = ctx;
+    log.info(`Request for ${ctx.URL.href}`);
+    log.debug(request.header, 'Request headers');
+    if (request.body) {
+        log.trace(ctx.request.body, 'Request body');
+    }
 
     try {
         await next();
     } catch (err) {
-        log[levels.error](err);
-        const res = ctx.response;
-        if (res.status !== 500) {
-            res.status = 500;
-            res.body = err.message;
-        }
+        handleError(log, response, err);
     }
 
     const responseTime = getPropertyByNameIgnoreCase(ctx.response.headers, 'X-Response-Time');
     const responseTimeStr = responseTime
         ? ` in ${responseTime}`
         : '';
-    log[levels.info]({ res: ctx.res }, `Request for ${ctx.URL.href} completed${responseTimeStr}`);
+    log.info({ res: ctx.res }, `Request for ${ctx.URL.href} completed${responseTimeStr}`);
 }
 
 module.exports = () => ({
