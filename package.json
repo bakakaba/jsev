@@ -11,7 +11,9 @@
     "clean": "rm -rf node_modules && rm package-lock.json",
     "test": "eslint src && nyc node test",
     "fix": "eslint --fix src",
-    "start": "NODE_ENV=local nodemon app.js"
+    "start": "NODE_ENV=local nodemon app.js",
+    "build": "webpack --mode production",
+    "start-webpack": "webpack --mode development --watch"
   },
   "config": {
     "output_path": "output"
@@ -49,7 +51,12 @@
     "shortid": "^2.2.8"
   },
   "devDependencies": {
-    "jsev-dev": "^0.3.3"
+    "jsev-dev": "^0.3.3",
+    "fork-ts-checker-webpack-plugin": "^1.0.0",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.3.4000",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
   },
   "nyc": {
     "all": true,
