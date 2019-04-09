@@ -1,10 +1,10 @@
 {
   "name": "jsev",
   "version": "0.8.2",
-  "description": "Base environment for building javascript applications.",
+  "description": "Environment for building Web API's.",
   "main": "src/index.js",
   "engines": {
-    "node": ">=8.11"
+    "node": ">=10"
   },
   "scripts": {
     "clean-output": "rm -rf .nyc_output && rm -rf output",
@@ -12,8 +12,7 @@
     "test": "eslint src && nyc node test",
     "fix": "eslint --fix src",
     "start": "NODE_ENV=local nodemon app.js",
-    "build": "webpack --mode production",
-    "start-webpack": "webpack --mode development --watch"
+    "build": "tsc"
   },
   "config": {
     "output_path": "output"
@@ -33,30 +32,26 @@
   },
   "homepage": "https://github.com/cruz82/jsev#readme",
   "dependencies": {
-    "@koa/cors": "^2.2.1",
+    "@koa/cors": "^3.0.0",
     "app-module-path": "^2.2.0",
     "bunyan": "^1.8.12",
-    "bunyan-sumologic": "^1.2.0",
-    "chai": "^4.1.2",
-    "chalk": "^2.4.1",
-    "change-case": "^3.0.2",
-    "graphql": "^0.13.2",
-    "koa": "^2.5.1",
-    "koa-graphql": "^0.7.5",
-    "koa-jwt": "^3.3.2",
+    "chai": "^4.2.0",
+    "chalk": "^2.4.2",
+    "change-case": "^3.1.0",
+    "graphql": "^14.2.1",
+    "koa": "^2.7.0",
+    "koa-graphql": "^0.8.0",
+    "koa-jwt": "^3.5.1",
     "koa-router": "^7.4.0",
-    "lodash": "^4.17.10",
-    "nodemon": "^1.17.5",
-    "raygun": "^0.9.1",
-    "shortid": "^2.2.8"
+    "lodash": "^4.17.11",
+    "nodemon": "^1.18.11",
+    "shortid": "^2.2.14"
   },
   "devDependencies": {
-    "jsev-dev": "^0.3.3",
-    "fork-ts-checker-webpack-plugin": "^1.0.0",
-    "ts-loader": "^5.3.3",
-    "typescript": "^3.3.4000",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0"
+    "@types/koa": "^2.0.48",
+    "@types/koa-router": "^7.0.40",
+    "@types/node": "^10.15.0",
+    "typescript": "^3.3.4000"
   },
   "nyc": {
     "all": true,

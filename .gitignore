@@ -57,5 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
-# general output directory
+# General output directory
 output/
+
+# Compiled output
+lib/

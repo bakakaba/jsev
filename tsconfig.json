@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
-    "strict": true,
+    "declaration": true,
     "module": "umd",
-    "sourceMap": true
-  }
+    "sourceMap": true,
+    "strict": true,
+    "outDir": "./lib"
+  },
+  "exclude": ["node_modules"]
 }
