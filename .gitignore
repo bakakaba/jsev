@@ -57,8 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
-# General output directory
-output/
-
 # Compiled output
 lib/
+
+# Misc
+package-lock.json
