@@ -11,7 +11,7 @@
     "clean": "rm -rf node_modules && rm package-lock.json",
     "test": "eslint src && nyc node test",
     "fix": "eslint --fix src",
-    "start": "NODE_ENV=local nodemon app.js",
+    "start": "tsc -w",
     "build": "tsc"
   },
   "config": {
@@ -44,13 +44,13 @@
     "koa-jwt": "^3.5.1",
     "koa-router": "^7.4.0",
     "lodash": "^4.17.11",
-    "nodemon": "^1.18.11",
     "shortid": "^2.2.14"
   },
   "devDependencies": {
+    "@types/chai": "^4.1.7",
     "@types/koa": "^2.0.48",
     "@types/koa-router": "^7.0.40",
-    "@types/node": "^10.15.0",
+    "@types/node": "^10",
     "typescript": "^3.3.4000"
   },
   "nyc": {

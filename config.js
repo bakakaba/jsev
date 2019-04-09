@@ -1,6 +1,5 @@
-/* eslint-disable max-len */
-
 module.exports = {
+    port: 5000,
     jwt: {
         secret: 'Super secret agent man!',
     },
@@ -10,7 +9,6 @@ module.exports = {
         },
         level: 'trace',
     },
-    port: 5000,
     requestLogger: {
         logLevelOverrides: {
             debug: 'trace',

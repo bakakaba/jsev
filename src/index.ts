@@ -1,7 +1,8 @@
-// import Koa from 'koa';
+import * as Koa from 'koa';
+import * as Router from 'koa-router';
 // const Router = require('koa-router');
 // const path = require('path');
-// const { assert } = require('chai');
+import { assert } from 'chai';
 
 // const { Logger } = require('./logging');
 // const { defaultMiddlewares, applyMiddlewares } = require('./middlewares');
@@ -9,29 +10,33 @@
 // const errors = require('./errors');
 
 export default class Environment {
-    // constructor(name) {
-    //     assert.exists(name);
+    app: Koa;
+    router: Router;
+    name: string;
 
-    //     this.name = name;
-    //     this.app = new Koa();
-    //     this.app.context.env = this;
+    constructor(name: string) {
+        assert.exists(name);
 
-    //     const callerPath = path.dirname(module.parent.filename);
-    //     this.cfg = utilities.configurator.loadConfiguration(callerPath);
+        this.name = name;
+        this.app = new Koa();
+        //     this.app.context.env = this;
 
-    //     this.log = new Logger(this);
-    //     this.middlewares = defaultMiddlewares;
+        //     const callerPath = path.dirname(module.parent.filename);
+        //     this.cfg = utilities.configurator.loadConfiguration(callerPath);
 
-    //     this.router = new Router();
-    //     this.app.on('error', (err) => {
-    //         this.log.fatal(err);
+        //     this.log = new Logger(this);
+        //     this.middlewares = defaultMiddlewares;
 
-    //         if (this.raygun) {
-    //             // eslint-disable-next-line no-empty-function
-    //             this.raygun.send(err, {}, () => {}, this.app.context.request, ['fatal']);
-    //         }
-    //     });
-    // }
+        this.router = new Router();
+        //     this.app.on('error', (err) => {
+        //         this.log.fatal(err);
+
+        //         if (this.raygun) {
+        //             // eslint-disable-next-line no-empty-function
+        //             this.raygun.send(err, {}, () => {}, this.app.context.request, ['fatal']);
+        //         }
+        //     });
+    }
 
     // get port() {
     //     if (!this.cfg.port) {
@@ -41,12 +46,21 @@ export default class Environment {
     //     return this.cfg.port;
     // }
 
-    // run() {
-    //     applyMiddlewares(this);
+    get port(): number {
+        // if (!this.cfg.port) {
+        //     throw new Error('Port has not been specified in the configuration.');
+        // }
 
-    //     this.app.listen(this.port);
-    //     this.log.info(`Listening on port ${this.port} (${this.cfg.env})`);
-    // }
+        // return this.cfg.port;
+        return 3000;
+    }
+
+    run() {
+        //     applyMiddlewares(this);
+
+        this.app.listen(this.port);
+        //     this.log.info(`Listening on port ${this.port} (${this.cfg.env})`);
+    }
 }
 
 // module.exports = {
