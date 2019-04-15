@@ -2,7 +2,7 @@
   "name": "jsev",
   "version": "0.8.2",
   "description": "Environment for building Web API's.",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "engines": {
     "node": ">=10"
   },

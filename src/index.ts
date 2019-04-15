@@ -4,12 +4,13 @@ import * as Router from 'koa-router';
 // const path = require('path');
 import { assert } from 'chai';
 
+// import * as Logger from './logging';
 // const { Logger } = require('./logging');
 // const { defaultMiddlewares, applyMiddlewares } = require('./middlewares');
 // const utilities = require('./utilities');
 // const errors = require('./errors');
 
-export default class Environment {
+export class Environment {
     app: Koa;
     router: Router;
     name: string;
@@ -24,7 +25,7 @@ export default class Environment {
         //     const callerPath = path.dirname(module.parent.filename);
         //     this.cfg = utilities.configurator.loadConfiguration(callerPath);
 
-        //     this.log = new Logger(this);
+        // this.log = new Logger(this);
         //     this.middlewares = defaultMiddlewares;
 
         this.router = new Router();
@@ -59,6 +60,7 @@ export default class Environment {
         //     applyMiddlewares(this);
 
         this.app.listen(this.port);
+        console.log('Listenting', this.port);
         //     this.log.info(`Listening on port ${this.port} (${this.cfg.env})`);
     }
 }
