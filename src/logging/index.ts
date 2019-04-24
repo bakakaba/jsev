@@ -1,3 +1,1 @@
-const { exporter } = require('../utilities');
-
-export default exporter.exportModules(__dirname);
+export * from "./Logger";

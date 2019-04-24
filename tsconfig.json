@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2018",
     "declaration": true,
-    "module": "system",
+    "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
     "strict": true,
