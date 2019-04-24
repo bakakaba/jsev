@@ -1,6 +1,4 @@
-/* eslint-disable no-continue */
-
-function fuzzyMatch(input, match) {
+export function fuzzyMatch(input: string, match: string) {
     const [iLen, mLen] = [input.length, match.length];
     const matrix = [];
 
@@ -29,7 +27,3 @@ function fuzzyMatch(input, match) {
 
     return scaledDist;
 }
-
-module.exports = {
-    fuzzyMatch,
-};

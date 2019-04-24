@@ -1,5 +1,0 @@
-extends:
-  - './node_modules/jsev-dev/.eslintrc.yml'
-  - 'plugin:node/recommended'
-plugins:
-  - node

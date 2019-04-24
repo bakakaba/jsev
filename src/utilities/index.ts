@@ -1,9 +1,9 @@
-const { exportModules } = require('./exporter');
+import { exportModules } from "../utilities/exporter";
 
 const modules = exportModules(__dirname);
 
-module.exports = {
-    ...modules,
-    isFunction: modules.typeCheck.isFunction,
-    isObject: modules.typeCheck.isObject,
+export default {
+  ...modules,
+  isFunction: modules.typeCheck.isFunction,
+  isObject: modules.typeCheck.isObject,
 };
