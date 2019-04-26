@@ -1,4 +1,4 @@
-import * as bunyan from "bunyan";
+import bunyan from "bunyan";
 
 import { LoggerOptions, Stream } from "bunyan";
 import { Environment } from "../Environment";
@@ -41,6 +41,7 @@ function bindProcessEventsListener(log: bunyan) {
   });
 }
 
+export type ILoggerOptions = LoggerOptions;
 export class Logger extends bunyan {}
 
 export function createLogger(env: Environment) {

@@ -1,14 +1,23 @@
 // Use console logging in here because we need to load the configuration before the logging module is usable
 
-import { LoggerOptions } from "bunyan";
 import { merge } from "lodash";
 import { join } from "path";
+
+import { ILoggerOptions } from "../logging";
+import { ICorsOptions } from "../middlewares/cors";
+import { IJWTOptions } from "../middlewares/jwt";
+import { IRaygunOptions } from "../middlewares/raygun";
+import { IServicesOptions } from "../middlewares/services";
 
 export interface IConfiguration {
   name: string;
   port: number;
   env?: string;
-  logger?: LoggerOptions;
+  logger?: ILoggerOptions;
+  cors: ICorsOptions;
+  jwt: IJWTOptions;
+  raygun: IRaygunOptions;
+  services: IServicesOptions;
 }
 
 export async function loadConfiguration(cfgPath: string) {
