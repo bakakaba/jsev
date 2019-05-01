@@ -1,6 +1,6 @@
 import { ParameterizedContext } from "koa";
 
-export default async () => ({
+export default () => ({
   func: async (
     ctx: ParameterizedContext<any, {}>,
     next: () => Promise<any>,

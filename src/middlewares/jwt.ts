@@ -6,7 +6,7 @@ export interface IJWTOptions extends jwt.Options {
   publicRoutes: RegExp[];
 }
 
-export default async (env: Environment) => {
+export default (env: Environment) => {
   if (!env.cfg.jwt) {
     return null;
   }
