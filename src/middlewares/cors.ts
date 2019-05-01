@@ -3,7 +3,7 @@ import { Environment } from "../Environment";
 
 export type ICorsOptions = cors.Options;
 
-export default (env: Environment) => {
+export default async (env: Environment) => {
   if (!env.cfg.cors) {
     return null;
   }

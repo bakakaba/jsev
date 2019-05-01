@@ -1,7 +1,7 @@
 import { ApolloServer, gql } from "apollo-server-koa";
 import { Environment } from "../Environment";
 
-export default (env: Environment) => {
+export default async (env: Environment) => {
   //   if (env.cfg.graphql) {
   //     env.router.all("/graphql", graphql(env.cfg.graphql));
 

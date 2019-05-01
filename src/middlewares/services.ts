@@ -8,7 +8,7 @@ export interface IServicesOptions {
   path: string;
 }
 
-export default (env: Environment) => {
+export default async (env: Environment) => {
   if (!env.cfg.services) {
     return null;
   }

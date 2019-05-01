@@ -6,7 +6,6 @@ import { join } from "path";
 import { ILoggerOptions } from "../logging";
 import { ICorsOptions } from "../middlewares/cors";
 import { IJWTOptions } from "../middlewares/jwt";
-import { IRaygunOptions } from "../middlewares/raygun";
 import { IServicesOptions } from "../middlewares/services";
 
 export interface IConfiguration {
@@ -16,13 +15,12 @@ export interface IConfiguration {
   logger?: ILoggerOptions;
   cors: ICorsOptions;
   jwt: IJWTOptions;
-  raygun: IRaygunOptions;
   services: IServicesOptions;
 }
 
 export async function loadConfiguration(cfgPath: string) {
   const defaultCfg = {
-    name: "Default <Specify a name in the configuration>",
+    name: process.env.name,
     port: 8080,
   };
 

@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import * as path from "path";
+import fs from "fs";
+import path from "path";
 import { promisify } from "util";
 
 import { IObject } from "../types/Object";
@@ -8,10 +8,10 @@ const readdir = promisify(fs.readdir);
 const lstat = promisify(fs.lstat);
 const jsExtensions = [".js", ".jsx"];
 
-async function exportModule(
+async function exportModule<T>(
   modulePath: string,
   name: string,
-): Promise<[string, object] | void> {
+): Promise<[string, T] | void> {
   const fullPath = `${modulePath}/${name}`;
   const info = await lstat(fullPath);
 
@@ -25,29 +25,33 @@ async function exportModule(
     jsExtensions.includes(parsedPath.ext) &&
     !parsedPath.name.includes(".test")
   ) {
-    return [name, await import(fullPath)];
+    let mod = await import(fullPath);
+    if (mod.default) {
+      mod = mod.default;
+    }
+
+    return [parsedPath.name, mod];
   }
 }
 
-export async function exportModules(exportPath: string) {
+export async function exportModules<T>(exportPath: string) {
   const normalizedExportPath = path.normalize(exportPath);
   const directoryContents = await readdir(normalizedExportPath);
 
-  const modules = directoryContents
-    .map((x) => exportModule(normalizedExportPath, x))
-    .reduce(
-      async (a, x) => {
-        const loaded = await x;
-        if (!loaded) {
-          return a;
-        }
+  const modulePromises = directoryContents
+    .map((x) => exportModule<T>(normalizedExportPath, x));
 
-        const [name, mod] = loaded;
-        a[name] = mod;
-        return a;
-      },
-      {} as IObject<any>,
-    );
+  const modules: IObject<T> = {};
+  for (const m of modulePromises) {
+    const loaded = await m;
+
+    if (!loaded) {
+      continue;
+    }
+
+    const [name, mod] = loaded;
+    modules[name] = mod;
+  }
 
   return modules;
 }

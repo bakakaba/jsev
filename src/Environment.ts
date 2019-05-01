@@ -1,21 +1,22 @@
 import Koa from "koa";
 import Router from "koa-router";
 
-// const { defaultMiddlewares, applyMiddlewares } = require('./middlewares');
-
-import {
-  IConfiguration,
-  loadConfiguration,
-} from "./configuration";
+import { IConfiguration, loadConfiguration } from "./configuration";
 import { InvalidOperationError } from "./errors";
 import { createLogger, Logger } from "./logging";
+import {
+  applyMiddlewares,
+  default as middlewares,
+  MiddlewareFactory,
+} from "./middlewares";
+import { IObject } from "./types";
 
 export class Environment {
   public app: Koa;
   public router: Router;
   public cfg!: IConfiguration;
   public log!: Logger;
-
+  public middlewares!: IObject<MiddlewareFactory>;
   public initPromise: Promise<void>;
 
   constructor(rootPath: string) {
@@ -23,18 +24,6 @@ export class Environment {
     this.app.context.env = this;
     this.router = new Router();
 
-    //     this.middlewares = defaultMiddlewares;
-
-    // console.log("root", rootPath);
-
-    //     this.app.on('error', (err) => {
-    //         this.log.fatal(err);
-
-    //         if (this.raygun) {
-    //             // eslint-disable-next-line no-empty-function
-    //             this.raygun.send(err, {}, () => {}, this.app.context.request, ['fatal']);
-    //         }
-    //     });
     this.initPromise = this.init(rootPath);
   }
 
@@ -47,7 +36,7 @@ export class Environment {
       );
     }
 
-    //     applyMiddlewares(this);
+    await applyMiddlewares(this);
 
     this.app.listen(this.cfg.port);
     this.log.info(
@@ -57,6 +46,12 @@ export class Environment {
 
   private async init(rootPath: string) {
     this.cfg = await loadConfiguration(rootPath);
+
     this.log = createLogger(this);
+    this.app.on("error", (err) => {
+      this.log.fatal(err);
+    });
+
+    this.middlewares = await middlewares;
   }
 }

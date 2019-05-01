@@ -61,7 +61,7 @@ async function handler(ctx: ParameterizedContext<any, {}>, next: () => Promise<a
   );
 }
 
-export default () => ({
+export default async () => ({
   func: handler,
   rank: 1,
 });

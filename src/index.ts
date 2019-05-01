@@ -1,7 +1,10 @@
 import callsites from "callsites";
 import { dirname } from "path";
+import sourceMapSupport from "source-map-support";
 
 import { Environment } from "./Environment";
+
+sourceMapSupport.install();
 
 let env: Environment;
 export default () => {
