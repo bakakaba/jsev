@@ -1,7 +1,7 @@
 import { DEBUG, ERROR, FATAL, INFO, TRACE, WARN } from "bunyan";
 import chalk from "chalk";
 import { omit } from "lodash";
-import { Writable, WritableOptions, Duplex } from "stream";
+import { Writable, WritableOptions } from "stream";
 import { inspect } from "util";
 
 import { IObject } from "../types/Object";

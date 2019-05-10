@@ -7,9 +7,9 @@
     "node": ">=10"
   },
   "scripts": {
-    "clean-output": "rm -rf .nyc_output && rm -rf output",
-    "clean": "rm -rf node_modules && rm package-lock.json",
+    "clean": "rm -rf node_modules && rm package-lock.json && rm -rf lib",
     "test": "eslint src && nyc node test",
+    "lint": "tslint -p tsconfig.json",
     "format": "prettier --write src/**/*",
     "start": "tsc -w",
     "build": "tsc"
@@ -74,5 +74,6 @@
       "text-summary"
     ],
     "report-dir": "./output/coverage"
-  }
+  },
+  "files": ["lib/**/*"]
 }
