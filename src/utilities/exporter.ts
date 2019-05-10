@@ -38,8 +38,9 @@ export async function exportModules<T>(exportPath: string) {
   const normalizedExportPath = path.normalize(exportPath);
   const directoryContents = await readdir(normalizedExportPath);
 
-  const modulePromises = directoryContents
-    .map((x) => exportModule<T>(normalizedExportPath, x));
+  const modulePromises = directoryContents.map((x) =>
+    exportModule<T>(normalizedExportPath, x),
+  );
 
   const modules: IObject<T> = {};
   for (const m of modulePromises) {

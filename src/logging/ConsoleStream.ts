@@ -50,7 +50,8 @@ const defaultOptions: IConsoleStreamOptions = {
   showTime: true,
 };
 
-export default class ConsoleStream extends Writable implements NodeJS.WritableStream {
+export default class ConsoleStream extends Writable
+  implements NodeJS.WritableStream {
   private opts: IConsoleStreamOptions;
 
   constructor(opts?: IConsoleStreamOptions) {

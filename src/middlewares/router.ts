@@ -34,6 +34,6 @@ export default async (env: Environment) => {
 
   return {
     func: env.router.routes(),
-    rank: 90,
+    rank: 99,
   };
 };

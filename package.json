@@ -10,7 +10,7 @@
     "clean-output": "rm -rf .nyc_output && rm -rf output",
     "clean": "rm -rf node_modules && rm package-lock.json",
     "test": "eslint src && nyc node test",
-    "fix": "eslint --fix src",
+    "format": "prettier --write src/**/*",
     "start": "tsc -w",
     "build": "tsc"
   },
@@ -60,6 +60,7 @@
     "@types/shortid": "0.0.29",
     "@types/source-map-support": "^0.5.0",
     "app-module-path": "^2.2.0",
+    "prettier": "^1.17.0",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
   },

@@ -30,7 +30,10 @@ function handleError(log: Logger, response: Response, error: Error) {
   }
 }
 
-async function handler(ctx: ParameterizedContext<any, {}>, next: () => Promise<any>) {
+async function handler(
+  ctx: ParameterizedContext<any, {}>,
+  next: () => Promise<any>,
+) {
   const reqId =
     getPropertyByNameIgnoreCase(ctx.request.headers, "X-Request-Id") ||
     shortId.generate();

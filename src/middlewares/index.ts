@@ -45,9 +45,11 @@ async function convertMiddlewareToListItem(
 export async function applyMiddlewares(env: Environment) {
   const { app, middlewares, log } = env;
 
-  console.log('middlewares', middlewares);
-  const mws = await Promise.all(Object.entries(middlewares)
-    .map(async (x) => convertMiddlewareToListItem(env, x[0], x[1])));
+  const mws = await Promise.all(
+    Object.entries(middlewares).map(async (x) =>
+      convertMiddlewareToListItem(env, x[0], x[1]),
+    ),
+  );
 
   const middlewareList = mws
     .filter(notNullFilter)
