@@ -3,7 +3,6 @@ import jwt from "koa-jwt";
 import { Environment } from "../Environment";
 
 export interface IJWTOptions extends jwt.Options {
-  publicRoutes: RegExp[];
 }
 
 export default (env: Environment) => {
@@ -24,29 +23,10 @@ export default (env: Environment) => {
     }
   }
 
-  let publicRoutes = [/^\/public/, /^\/favicon.ico/];
-  if (cfg.publicRoutes) {
-    publicRoutes = publicRoutes.concat(cfg.publicRoutes);
-  }
-
-  function isPublicRoute(url: string) {
-    if (publicRoutes.some((x) => !!url.match(x))) {
-      return true;
-    }
-
-    return false;
-  }
-
   const middleware = jwt(cfg);
 
   return {
-    func: (ctx: ParameterizedContext<any, {}>, next: () => Promise<any>) => {
-      if (isPublicRoute(ctx.url)) {
-        return next();
-      }
-
-      return middleware(ctx, next);
-    },
-    rank: 12,
+    func: (ctx: ParameterizedContext<any, {}>, next: () => Promise<any>) => middleware(ctx, next),
+    rank: 21,
   };
 };

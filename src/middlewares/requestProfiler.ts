@@ -13,5 +13,5 @@ export default () => ({
       ctx.set("X-Response-Time", `${ms}ms`);
     }
   },
-  rank: 10,
+  rank: 2,
 });
