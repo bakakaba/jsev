@@ -2,8 +2,7 @@ import { ParameterizedContext } from "koa";
 import jwt from "koa-jwt";
 import { Environment } from "../Environment";
 
-export interface IJWTOptions extends jwt.Options {
-}
+export interface IJWTOptions extends jwt.Options {}
 
 export default (env: Environment) => {
   if (!env.cfg.jwt) {
@@ -19,7 +18,7 @@ export default (env: Environment) => {
         secret,
       };
     } else if (cfg.secret instanceof Array) {
-      cfg.secret = Buffer.from(cfg.secret);
+      cfg.secret = Buffer.from(cfg.secret as any[]);
     }
   }
 

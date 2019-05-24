@@ -17,11 +17,7 @@ export function fuzzyMatch(input: string, match: string) {
     for (let j = 1; j <= mLen; j++) {
       const jChar = match[j - 1];
       const cost = iChar === jChar ? 0 : 1;
-      matrix[i][j] = Math.min(
-        matrix[i - 1][j] + 1,
-        matrix[i][j - 1] + 1,
-        matrix[i - 1][j - 1] + cost,
-      );
+      matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
     }
   }
 

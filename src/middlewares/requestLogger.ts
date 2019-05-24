@@ -30,13 +30,8 @@ function handleError(log: Logger, response: Response, error: Error) {
   }
 }
 
-async function handler(
-  ctx: ParameterizedContext<any, {}>,
-  next: () => Promise<any>,
-) {
-  const reqId =
-    getPropertyByNameIgnoreCase(ctx.request.headers, "X-Request-Id") ||
-    shortId.generate();
+async function handler(ctx: ParameterizedContext<any, {}>, next: () => Promise<any>) {
+  const reqId = getPropertyByNameIgnoreCase(ctx.request.headers, "X-Request-Id") || shortId.generate();
   ctx.set("X-Request-Id", reqId);
 
   // Using snake_case for req_id as per Koa's recommendation
@@ -53,15 +48,9 @@ async function handler(
     handleError(log, response, err);
   }
 
-  const responseTime = getPropertyByNameIgnoreCase(
-    ctx.response.headers,
-    "X-Response-Time",
-  );
+  const responseTime = getPropertyByNameIgnoreCase(ctx.response.headers, "X-Response-Time");
   const responseTimeStr = responseTime ? ` in ${responseTime}` : "";
-  log.info(
-    { res: ctx.res },
-    `Request for ${ctx.URL.href} completed${responseTimeStr}`,
-  );
+  log.info({ res: ctx.res }, `Request for ${ctx.URL.href} completed${responseTimeStr}`);
 }
 
 export default () => ({

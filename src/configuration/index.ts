@@ -3,9 +3,9 @@
 import { merge } from "lodash";
 import { join } from "path";
 
+import { Options as JWTOptions } from "koa-jwt";
 import { ILoggerOptions } from "../logging";
 import { ICorsOptions } from "../middlewares/cors";
-import { IJWTOptions } from "../middlewares/jwt";
 import { IServicesOptions } from "../middlewares/services";
 
 export interface IConfiguration {
@@ -14,7 +14,7 @@ export interface IConfiguration {
   env?: string;
   logger?: ILoggerOptions;
   cors: ICorsOptions;
-  jwt: IJWTOptions;
+  jwt: JWTOptions;
   services: IServicesOptions;
 }
 
