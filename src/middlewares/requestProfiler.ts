@@ -1,7 +1,10 @@
 import { ParameterizedContext } from "koa";
 
 export default () => ({
-  func: async (ctx: ParameterizedContext<any, {}>, next: () => Promise<any>) => {
+  func: async (
+    ctx: ParameterizedContext<any, {}>,
+    next: () => Promise<any>,
+  ) => {
     const start = Date.now();
     try {
       await next();

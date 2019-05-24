@@ -50,7 +50,8 @@ const defaultOptions: IConsoleStreamOptions = {
   showTime: true,
 };
 
-export default class ConsoleStream extends Writable implements NodeJS.WritableStream {
+export default class ConsoleStream extends Writable
+  implements NodeJS.WritableStream {
   private opts: IConsoleStreamOptions;
 
   constructor(opts?: IConsoleStreamOptions) {
@@ -81,7 +82,10 @@ export default class ConsoleStream extends Writable implements NodeJS.WritableSt
 
   private getDetails(data: IData) {
     const details = omit(data, this.opts.omitFromDetails);
-    const output = details && Object.keys(details).length > 0 ? inspect(details, { colors: true }) : "";
+    const output =
+      details && Object.keys(details).length > 0
+        ? inspect(details, { colors: true })
+        : "";
 
     return chalk.cyan(output);
   }
@@ -130,7 +134,10 @@ export default class ConsoleStream extends Writable implements NodeJS.WritableSt
     }
 
     const tWidth = widths.reduce((a, x) => a + x + 2, 1);
-    const header = table.header.reduce((a, x, i) => `${a} ${chalk.bold.green(x.toString().padEnd(widths[i]))} |`, "|");
+    const header = table.header.reduce(
+      (a, x, i) => `${a} ${chalk.bold.green(x.toString().padEnd(widths[i]))} |`,
+      "|",
+    );
 
     const rows = table.rows.reduce((ra, row, ri) => {
       const r = row.reduce((a, x, i) => {

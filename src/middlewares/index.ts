@@ -46,14 +46,21 @@ export async function applyMiddlewares(env: Environment) {
   const { app, middlewares, log } = env;
 
   const mws = await Promise.all(
-    Object.entries(middlewares).map(async (x) => convertMiddlewareToListItem(env, x[0], x[1])),
+    Object.entries(middlewares).map(async (x) =>
+      convertMiddlewareToListItem(env, x[0], x[1]),
+    ),
   );
 
-  const middlewareList = mws.filter(notNullFilter).sort((a, b) => a.rank - b.rank);
+  const middlewareList = mws
+    .filter(notNullFilter)
+    .sort((a, b) => a.rank - b.rank);
 
   middlewareList.forEach((x) => app.use(x.func));
 
-  log.info({ table: convertToTable(middlewareList) }, `Loaded ${middlewareList.length} middlewares`);
+  log.info(
+    { table: convertToTable(middlewareList) },
+    `Loaded ${middlewareList.length} middlewares`,
+  );
 }
 
 export default exportModules<MiddlewareFactory>(__dirname);

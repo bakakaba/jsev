@@ -17,11 +17,6 @@
     "prepublishOnly": "npm run lint && jest --coverage",
     "postversion": "git push && git push --tags"
   },
-  "husky": {
-    "pre-commit": "npm run format && npm run lint",
-    "pre-push": "npm run prepublishOnly",
-    "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cruz82/jsev.git"
@@ -73,7 +68,6 @@
   },
   "prettier": {
     "arrowParens": "always",
-    "printWidth": 120,
     "trailingComma": "all"
   },
   "files": [

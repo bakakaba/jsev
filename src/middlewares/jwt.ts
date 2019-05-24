@@ -2,8 +2,6 @@ import { ParameterizedContext } from "koa";
 import jwt from "koa-jwt";
 import { Environment } from "../Environment";
 
-export interface IJWTOptions extends jwt.Options {}
-
 export default (env: Environment) => {
   if (!env.cfg.jwt) {
     return null;
@@ -25,7 +23,8 @@ export default (env: Environment) => {
   const middleware = jwt(cfg);
 
   return {
-    func: (ctx: ParameterizedContext<any, {}>, next: () => Promise<any>) => middleware(ctx, next),
+    func: (ctx: ParameterizedContext<any, {}>, next: () => Promise<any>) =>
+      middleware(ctx, next),
     rank: 21,
   };
 };
