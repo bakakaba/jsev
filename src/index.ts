@@ -3,6 +3,8 @@ import { dirname } from "path";
 import sourceMapSupport from "source-map-support";
 
 import { Environment } from "./Environment";
+import * as errors from "./errors";
+import * as utilities from "./utilities";
 
 sourceMapSupport.install();
 
@@ -17,4 +19,4 @@ export default () => {
   return env;
 };
 
-export * from "./errors";
+export { errors, utilities };

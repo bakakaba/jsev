@@ -56,3 +56,40 @@ export async function exportModules<T>(exportPath: string) {
 
   return modules;
 }
+
+export function exportModulesSync<T>(exportPath: string) {
+  const normalizedExportPath = path.normalize(exportPath);
+  const directoryContents = fs.readdirSync(normalizedExportPath);
+
+  const modules = directoryContents.reduce(
+    (a, x) => {
+      const fullPath = `${normalizedExportPath}/${x}`;
+      const info = fs.lstatSync(fullPath);
+
+      if (info.isDirectory()) {
+        a[x] = require(fullPath);
+        return a;
+      }
+
+      const parsedPath = path.parse(fullPath);
+      if (
+        parsedPath.name !== "index" &&
+        extensions.includes(parsedPath.ext) &&
+        !parsedPath.name.includes(".test")
+      ) {
+
+        let mod = require(fullPath);
+        if (mod.default) {
+          mod = mod.default;
+        }
+
+        a[parsedPath.name] = mod;
+      }
+
+      return a;
+    },
+    {} as IObject<T>,
+  );
+
+  return modules;
+}
