@@ -19,17 +19,17 @@ export interface IConfiguration {
 }
 
 export async function loadConfiguration(cfgPath: string) {
+  const env = process.env.NODE_ENV;
   const defaultCfg = {
+    env,
     name: process.env.name || "app",
     port: 8080,
   };
 
   const cfg = [await import(join(cfgPath, "config.js"))];
 
-  const envName = process.env.NODE_ENV;
-  if (envName) {
-    cfg[0].env = envName;
-    const envCfgName = `config.${envName}.js`;
+  if (env) {
+    const envCfgName = `config.${env}.js`;
     try {
       cfg.push(await import(join(cfgPath, envCfgName)));
     } catch (err) {
@@ -40,5 +40,8 @@ export async function loadConfiguration(cfgPath: string) {
     }
   }
 
-  return merge(defaultCfg, ...cfg) as IConfiguration;
+  return merge(
+    defaultCfg,
+    ...cfg.map((x) => (x.default ? x.default : x)),
+  ) as IConfiguration;
 }
