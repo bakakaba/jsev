@@ -1,7 +1,7 @@
 import { Middleware } from "koa";
 
 import { Environment } from "../Environment";
-import { exportModules, isFunction, notNullFilter } from "../utilities";
+import { exportModulesSync, isFunction, notNullFilter } from "../utilities";
 
 export interface IMiddleware {
   name: string;
@@ -63,4 +63,4 @@ export async function applyMiddlewares(env: Environment) {
   );
 }
 
-export default exportModules<MiddlewareFactory>(__dirname);
+export default exportModulesSync<MiddlewareFactory>(__dirname);

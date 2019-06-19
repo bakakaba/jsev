@@ -20,7 +20,7 @@ export interface IConfiguration {
 
 export async function loadConfiguration(cfgPath: string) {
   const defaultCfg = {
-    name: process.env.name,
+    name: process.env.name || "app",
     port: 8080,
   };
 

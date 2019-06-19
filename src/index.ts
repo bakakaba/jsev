@@ -7,9 +7,8 @@ import * as errors from "./errors";
 import * as utilities from "./utilities";
 
 sourceMapSupport.install();
-
 let env: Environment;
-export default () => {
+export function jsev() {
   if (!env) {
     const parent = callsites()[1];
     const callerPath = dirname(parent.getFileName()!);
@@ -17,6 +16,6 @@ export default () => {
   }
 
   return env;
-};
+}
 
 export { errors, utilities };

@@ -6,11 +6,12 @@ import { IObject } from "../types/Object";
 
 const readdir = promisify(fs.readdir);
 const lstat = promisify(fs.lstat);
-const extensions = [".js", ".jsx", ".ts", ".tsx"];
+const DEFAULT_EXTENSIONS = [".js", ".jsx"];
 
 async function exportModule<T>(
   modulePath: string,
   name: string,
+  extensions: string[],
 ): Promise<[string, T] | void> {
   const fullPath = `${modulePath}/${name}`;
   const info = await lstat(fullPath);
@@ -34,12 +35,12 @@ async function exportModule<T>(
   }
 }
 
-export async function exportModules<T>(exportPath: string) {
+export async function exportModules<T>(exportPath: string, extensions = DEFAULT_EXTENSIONS) {
   const normalizedExportPath = path.normalize(exportPath);
   const directoryContents = await readdir(normalizedExportPath);
 
   const modulePromises = directoryContents.map((x) =>
-    exportModule<T>(normalizedExportPath, x),
+    exportModule<T>(normalizedExportPath, x, extensions),
   );
 
   const modules: IObject<T> = {};
@@ -57,7 +58,7 @@ export async function exportModules<T>(exportPath: string) {
   return modules;
 }
 
-export function exportModulesSync<T>(exportPath: string) {
+export function exportModulesSync<T>(exportPath: string, extensions = DEFAULT_EXTENSIONS) {
   const normalizedExportPath = path.normalize(exportPath);
   const directoryContents = fs.readdirSync(normalizedExportPath);
 
@@ -65,13 +66,16 @@ export function exportModulesSync<T>(exportPath: string) {
     (a, x) => {
       const fullPath = `${normalizedExportPath}/${x}`;
       const info = fs.lstatSync(fullPath);
+      const parsedPath = path.parse(fullPath);
 
       if (info.isDirectory()) {
-        a[x] = require(fullPath);
+        if (parsedPath.name !== "__tests__") {
+          a[x] = require(fullPath);
+        }
+
         return a;
       }
 
-      const parsedPath = path.parse(fullPath);
       if (
         parsedPath.name !== "index" &&
         extensions.includes(parsedPath.ext) &&
