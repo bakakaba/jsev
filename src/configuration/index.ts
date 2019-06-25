@@ -18,6 +18,19 @@ export interface IConfiguration {
   services: IServicesOptions;
 }
 
+async function importConfiguration(cfgPath: string, cfgFile: string) {
+  const path = join(cfgPath, cfgFile);
+  try {
+    const cfg = await import(path);
+    return cfg;
+  } catch (err) {
+    if (err.code !== "MODULE_NOT_FOUND") {
+      throw err;
+    }
+    console.warn(`Configuration ${cfgFile} not found`); // tslint:disable-line:no-console
+  }
+}
+
 export async function loadConfiguration(cfgPath: string) {
   const env = process.env.NODE_ENV;
   const defaultCfg = {
@@ -26,22 +39,15 @@ export async function loadConfiguration(cfgPath: string) {
     port: 8080,
   };
 
-  const cfg = [await import(join(cfgPath, "config.js"))];
+  const cfgs = [await importConfiguration(cfgPath, "config.js")];
 
   if (env) {
     const envCfgName = `config.${env}.js`;
-    try {
-      cfg.push(await import(join(cfgPath, envCfgName)));
-    } catch (err) {
-      if (err.code !== "MODULE_NOT_FOUND") {
-        throw err;
-      }
-      console.warn(`Environment configuration ${envCfgName} not found`); // tslint:disable-line:no-console
-    }
+    cfgs.push(importConfiguration(cfgPath, envCfgName));
   }
 
   return merge(
     defaultCfg,
-    ...cfg.map((x) => (x.default ? x.default : x)),
+    ...cfgs.filter((x) => x).map((x) => (x.default ? x.default : x)),
   ) as IConfiguration;
 }
