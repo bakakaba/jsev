@@ -6,6 +6,8 @@ import { Environment } from "./Environment";
 import * as errors from "./errors";
 import * as utilities from "./utilities";
 
+export { default as gql } from "graphql-tag";
+
 sourceMapSupport.install();
 let env: Environment;
 export function jsev() {

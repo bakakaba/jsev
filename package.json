@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/cruz82/jsev#readme",
   "dependencies": {
+    "@graphql-modules/core": "^0.7.5",
     "@koa/cors": "^3.0.0",
     "apollo-server-koa": "^2.6.3",
     "bunyan": "^1.8.12",
@@ -39,16 +40,19 @@
     "chalk": "^2.4.2",
     "change-case": "^3.1.0",
     "graphql": "^14.3.1",
+    "graphql-tag": "^2.10.1",
     "koa": "^2.7.0",
     "koa-jwt": "^3.5.1",
     "koa-router": "^7.4.0",
     "lodash": "^4.17.11",
+    "reflect-metadata": "^0.1.13",
     "shortid": "^2.2.14",
     "source-map-support": "^0.5.12"
   },
   "devDependencies": {
     "@types/bunyan": "^1.8.6",
     "@types/chalk": "^2.2.0",
+    "@types/glob": "^7.1.1",
     "@types/graphql": "^14.2.1",
     "@types/jest": "^24.0.15",
     "@types/koa": "^2.0.48",

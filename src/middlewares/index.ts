@@ -7,6 +7,7 @@ export interface IMiddleware {
   name: string;
   rank: number;
   func: Middleware;
+  apply: () => void;
 }
 
 export type MiddlewareFactory = (env: Environment) => IMiddleware;
@@ -55,7 +56,13 @@ export async function applyMiddlewares(env: Environment) {
     .filter(notNullFilter)
     .sort((a, b) => a.rank - b.rank);
 
-  middlewareList.forEach((x) => app.use(x.func));
+  middlewareList.forEach((x) => {
+    if (x.func) {
+      app.use(x.func);
+    } else {
+      x.apply();
+    }
+  });
 
   log.info(
     { table: convertToTable(middlewareList) },

@@ -1,39 +1,52 @@
+import { GraphQLModule } from "@graphql-modules/core";
 import { ApolloServer, gql } from "apollo-server-koa";
+import fs from "fs";
+import path from "path";
+import { promisify } from "util";
 import { Environment } from "../Environment";
 
+const readdir = promisify(fs.readdir);
+const lstat = promisify(fs.lstat);
+const exists = promisify(fs.exists);
+
+async function loadModule(modulePath: string) {
+  const info = await lstat(modulePath);
+  if (!info.isDirectory()) {
+    return null;
+  }
+
+  const gqlPath = path.join(modulePath, "graphql");
+  if (!(await exists(gqlPath))) {
+    return null;
+  }
+
+  const schema = await import(gqlPath);
+  return new GraphQLModule(schema);
+}
+
+async function loadModules(rootPath: string) {
+  const modulesPath = path.join(rootPath, "modules");
+  const items = await readdir(modulesPath);
+
+  const mods = await Promise.all(
+    items.map((x) => loadModule(path.join(modulesPath, x))),
+  );
+
+  return mods.filter((x) => !!x) as GraphQLModule[];
+}
+
 export default async (env: Environment) => {
-  //   if (env.cfg.graphql) {
-  //     env.router.all("/graphql", graphql(env.cfg.graphql));
+  const modules = await loadModules(env.rootPath);
 
-  //     const publicGraphql = Object.assign({}, env.cfg.graphql, {
-  //       schema: env.cfg.graphql.publicSchema,
-  //     });
-  //     env.router.all("/public/graphql", graphql(publicGraphql));
-  //   }
+  const appModule = new GraphQLModule({
+    imports: modules,
+  });
 
-  //   if (env.router.stack.length === 0) {
-  //     return null;
-  //   }
-
-  // Construct a schema, using GraphQL schema language
-  const typeDefs = gql`
-    type Query {
-      hello: String
-    }
-  `;
-
-  // Provide resolver functions for your schema fields
-  const resolvers = {
-    Query: {
-      hello: () => "Hello world!",
-    },
-  };
-
-  const server = new ApolloServer({ typeDefs, resolvers });
-  server.applyMiddleware({ app: env.app });
+  const { schema, context } = appModule;
+  const server = new ApolloServer({ schema, context });
 
   return {
-    func: env.router.routes(),
+    apply: () => server.applyMiddleware({ app: env.app }),
     rank: 98,
   };
 };

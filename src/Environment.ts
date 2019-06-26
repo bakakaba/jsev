@@ -12,14 +12,16 @@ import {
 import { IObject } from "./types";
 
 export class Environment {
-  public app: Koa;
-  public router: Router;
+  public readonly rootPath: string;
+  public readonly app: Koa;
+  public readonly router: Router;
+  public readonly initPromise: Promise<void>;
   public cfg!: IConfiguration;
   public log!: Logger;
   public middlewares!: IObject<MiddlewareFactory>;
-  public initPromise: Promise<void>;
 
   constructor(rootPath: string) {
+    this.rootPath = rootPath;
     this.app = new Koa();
     this.app.context.env = this;
     this.router = new Router();
