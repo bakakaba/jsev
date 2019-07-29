@@ -10,11 +10,22 @@ export { default as gql } from "graphql-tag";
 
 sourceMapSupport.install();
 let env: Environment;
-export function jsev() {
+
+async function defaultInit(ev: Environment) {
+  ev.log.info("No initialization function specified");
+}
+
+export function jsev(initFunc = defaultInit) {
   if (!env) {
     const parent = callsites()[1];
     const callerPath = dirname(parent.getFileName()!);
     env = new Environment(callerPath);
+
+    env.initPromise
+      .then(async () => {
+        await initFunc(env);
+        await env.run();
+      });
   }
 
   return env;
