@@ -6,7 +6,7 @@ import { InvalidOperationError } from "./errors";
 import { createLogger, Logger } from "./logging";
 import {
   applyMiddlewares,
-  default as middlewares,
+  loadMiddlewares,
   MiddlewareFactory,
 } from "./middlewares";
 import { IObject } from "./types";
@@ -54,6 +54,6 @@ export class Environment {
       this.log.fatal(err);
     });
 
-    this.middlewares = await middlewares;
+    this.middlewares = await loadMiddlewares(rootPath);
   }
 }

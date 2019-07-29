@@ -1,7 +1,9 @@
+import fs from "fs";
 import { Middleware } from "koa";
+import path from "path";
 
 import { Environment } from "../Environment";
-import { exportModulesSync, isFunction, notNullFilter } from "../utilities";
+import { exportModules, isFunction, notNullFilter } from "../utilities";
 
 export interface IMiddleware {
   name: string;
@@ -70,4 +72,16 @@ export async function applyMiddlewares(env: Environment) {
   );
 }
 
-export default exportModulesSync<MiddlewareFactory>(__dirname);
+export async function loadMiddlewares(appRootPath: string) {
+  let middlewares = await exportModules<MiddlewareFactory>(__dirname);
+
+  const appMiddlewarePath = path.join(appRootPath, "middlewares");
+  if (fs.existsSync(appMiddlewarePath)) {
+    middlewares = {
+      ...middlewares,
+      ...await exportModules<MiddlewareFactory>(appMiddlewarePath),
+    };
+  }
+
+  return middlewares;
+}
