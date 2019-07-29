@@ -2,6 +2,7 @@
 
 import { merge } from "lodash";
 import { join } from "path";
+import { ConnectionOptions } from "typeorm";
 
 import { Options as JWTOptions } from "koa-jwt";
 import { ILoggerOptions } from "../logging";
@@ -16,6 +17,7 @@ export interface IConfiguration {
   cors: ICorsOptions;
   jwt: JWTOptions;
   services: IServicesOptions;
+  typeorm?: ConnectionOptions;
 }
 
 async function importConfiguration(cfgPath: string, cfgFile: string) {

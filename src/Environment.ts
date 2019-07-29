@@ -1,5 +1,6 @@
 import Koa from "koa";
 import Router from "koa-router";
+import { Connection, createConnection } from "typeorm";
 
 import { IConfiguration, loadConfiguration } from "./configuration";
 import { InvalidOperationError } from "./errors";
@@ -17,6 +18,7 @@ export class Environment {
   public readonly router: Router;
   public readonly initPromise: Promise<void>;
   public cfg!: IConfiguration;
+  public dbConnection!: Connection;
   public log!: Logger;
   public middlewares!: IObject<MiddlewareFactory>;
 
@@ -36,6 +38,12 @@ export class Environment {
       throw new InvalidOperationError(
         "Unable to run without initializing the configuration.",
       );
+    }
+
+    if (this.cfg.typeorm) {
+      const { typeorm } = this.cfg;
+      this.log.info(`Connecting to ${typeorm.type} using typeorm`);
+      this.dbConnection = await createConnection(typeorm);
     }
 
     await applyMiddlewares(this);

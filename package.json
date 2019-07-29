@@ -42,15 +42,16 @@
     "callsites": "^3.1.0",
     "chalk": "^2.4.2",
     "change-case": "^3.1.0",
-    "graphql-tag": "^2.10.1",
     "graphql": "^14.4.2",
+    "graphql-tag": "^2.10.1",
+    "koa": "^2.7.0",
     "koa-jwt": "^3.6.0",
     "koa-router": "^7.4.0",
-    "koa": "^2.7.0",
     "lodash": "^4.17.14",
     "reflect-metadata": "^0.1.13",
     "shortid": "^2.2.14",
-    "source-map-support": "^0.5.12"
+    "source-map-support": "^0.5.12",
+    "typeorm": "^0.2.18"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",
