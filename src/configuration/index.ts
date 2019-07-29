@@ -1,15 +1,15 @@
 // Use console logging in here because we need to load the configuration before the logging module is usable
 
+import { Options as JWTOptions } from "koa-jwt";
 import { merge } from "lodash";
 import { join } from "path";
-import { ConnectionOptions } from "typeorm";
 
-import { Options as JWTOptions } from "koa-jwt";
 import { ILoggerOptions } from "../logging";
 import { ICorsOptions } from "../middlewares/cors";
 import { IServicesOptions } from "../middlewares/services";
 
 export interface IConfiguration {
+  [key: string]: any;
   name: string;
   port: number;
   env?: string;
@@ -17,7 +17,6 @@ export interface IConfiguration {
   cors: ICorsOptions;
   jwt: JWTOptions;
   services: IServicesOptions;
-  typeorm?: ConnectionOptions;
 }
 
 async function importConfiguration(cfgPath: string, cfgFile: string) {
@@ -45,7 +44,7 @@ export async function loadConfiguration(cfgPath: string) {
 
   if (env) {
     const envCfgName = `config.${env}.js`;
-    cfgs.push(importConfiguration(cfgPath, envCfgName));
+    cfgs.push(await importConfiguration(cfgPath, envCfgName));
   }
 
   return merge(
