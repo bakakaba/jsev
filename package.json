@@ -77,7 +77,8 @@
     "trailingComma": "all"
   },
   "files": [
-    "lib/**/*"
+    "lib/**/*",
+    "errors/*"
   ],
   "jest": {
     "preset": "ts-jest",
