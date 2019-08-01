@@ -1,6 +1,6 @@
 {
   "name": "jsev",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "description": "Environment for building Web API's.",
   "main": "lib/index.js",
   "engines": {
