@@ -78,7 +78,8 @@
   },
   "files": [
     "lib/**/*",
-    "errors/*"
+    "errors/*",
+    "types/*"
   ],
   "jest": {
     "preset": "ts-jest",

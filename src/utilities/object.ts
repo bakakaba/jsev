@@ -1,4 +1,4 @@
-import { IObject } from "../types/Object";
+import { IObject } from "../types";
 
 export function getPropertyByNameIgnoreCase(obj: IObject<any>, name: string) {
   const nName = name.toLocaleLowerCase();

@@ -2,7 +2,11 @@ import { ParameterizedContext } from "koa";
 
 import { Environment } from "../Environment";
 import { IObject } from "../types";
-import { exportModules, isFunction } from "../utilities";
+import { exportModulesSync, isFunction } from "../utilities";
+
+export interface IServiceFactory<T extends object> {
+  init: (env: Environment) => T;
+}
 
 export interface IServicesOptions {
   path: string;
@@ -16,17 +20,17 @@ export default (env: Environment) => {
   const cfg = env.cfg.services;
 
   const { log } = env;
-  const serviceModules = exportModules(cfg.path);
+  const serviceModules = exportModulesSync<IServiceFactory<object>>(cfg.path);
   const services = Object.entries(serviceModules).reduce(
     (a, x) => {
       const [svcName, svcLoader] = x;
 
-      if (!isFunction(svcLoader)) {
-        log.warn(`Unable to load ${svcName}`);
+      if (!isFunction(svcLoader.init)) {
+        log.warn(`No init function found for ${svcName}`);
         return a;
       }
 
-      const svc = svcLoader(env);
+      const svc = svcLoader.init(env);
       if (!svc) {
         log.debug(`${svcName} was not loaded`);
         return a;

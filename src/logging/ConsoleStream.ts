@@ -4,8 +4,6 @@ import { omit } from "lodash";
 import { Writable, WritableOptions } from "stream";
 import { inspect } from "util";
 
-import { IObject } from "../types/Object";
-
 interface IConsoleStreamOptions extends WritableOptions {
   omitFromDetails: string[];
   showProcess: boolean;

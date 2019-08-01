@@ -19,11 +19,11 @@ export function createLogger(env: Environment) {
   ];
 
   const bunyanCfg: LoggerOptions = {
-    ...cfg,
     level: bunyan.INFO,
     name,
     serializers: bunyan.stdSerializers,
     streams,
+    ...cfg,
   };
 
   // Delete so they are not logged

@@ -7,7 +7,7 @@ import {
   Thunk,
 } from "graphql";
 
-import { IObject } from "../types/Object";
+import { IObject } from "../types";
 
 export function wrapResolveWithLogging(
   func: GraphQLFieldResolver<any, any>,

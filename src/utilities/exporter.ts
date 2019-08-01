@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { promisify } from "util";
 
-import { IObject } from "../types/Object";
+import { IObject } from "../types";
 
 const readdir = promisify(fs.readdir);
 const lstat = promisify(fs.lstat);

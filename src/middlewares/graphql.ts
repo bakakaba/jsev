@@ -70,6 +70,7 @@ async function loadModule(
   }
 
   mod = new GraphQLModule({
+    context: (session) => session.ctx,
     imports: importedModules,
     resolvers,
     typeDefs,
@@ -112,6 +113,7 @@ export default async (env: Environment) => {
   const modules = await loadModules(env.rootPath);
 
   const appModule = new GraphQLModule({
+    context: (session) => session.ctx,
     imports: modules,
   });
 
