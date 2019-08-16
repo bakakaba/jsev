@@ -25,6 +25,6 @@ export default (env: Environment) => {
   return {
     func: (ctx: ParameterizedContext<any, {}>, next: () => Promise<any>) =>
       middleware(ctx, next),
-    rank: 21,
+    rank: 5,
   };
 };

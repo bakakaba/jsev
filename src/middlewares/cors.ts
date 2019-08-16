@@ -12,6 +12,6 @@ export default (env: Environment) => {
 
   return {
     func: middleware,
-    rank: 20,
+    rank: 4,
   };
 };
