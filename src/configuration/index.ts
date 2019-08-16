@@ -1,5 +1,6 @@
 // Use console logging in here because we need to load the configuration before the logging module is usable
 
+import { KoaJwtOptions } from "jwks-rsa";
 import { Options as JWTOptions } from "koa-jwt";
 import { merge } from "lodash";
 import { join } from "path";
@@ -8,6 +9,10 @@ import { ILoggerOptions } from "../logging";
 import { ICorsOptions } from "../middlewares/cors";
 import { IServicesOptions } from "../middlewares/services";
 
+interface IJWTOptions extends JWTOptions {
+  jwks: KoaJwtOptions;
+}
+
 export interface IConfiguration {
   [key: string]: any;
   name: string;
@@ -15,7 +20,7 @@ export interface IConfiguration {
   env?: string;
   logger?: ILoggerOptions;
   cors: ICorsOptions;
-  jwt: JWTOptions;
+  jwt: IJWTOptions;
   services: IServicesOptions;
 }
 

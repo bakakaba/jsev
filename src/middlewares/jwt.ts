@@ -1,5 +1,7 @@
+import { koaJwtSecret } from "jwks-rsa";
 import { ParameterizedContext } from "koa";
 import jwt from "koa-jwt";
+
 import { Environment } from "../Environment";
 
 export default (env: Environment) => {
@@ -8,6 +10,7 @@ export default (env: Environment) => {
   }
 
   let cfg = env.cfg.jwt;
+
   if (cfg.secret) {
     if (typeof cfg.secret === "string") {
       const secret = Buffer.from(cfg.secret, "base64");
@@ -18,6 +21,10 @@ export default (env: Environment) => {
     } else if (cfg.secret instanceof Array) {
       cfg.secret = Buffer.from(cfg.secret as any[]);
     }
+  }
+
+  if (cfg.jwks) {
+    cfg.secret = koaJwtSecret(cfg.jwks);
   }
 
   const middleware = jwt(cfg);

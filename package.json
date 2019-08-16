@@ -45,6 +45,7 @@
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
     "graphql-tag-pluck": "^0.8.3",
+    "jwks-rsa": "^1.6.0",
     "koa": "^2.7.0",
     "koa-jwt": "^3.6.0",
     "koa-router": "^7.4.0",
