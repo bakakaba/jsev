@@ -38,7 +38,7 @@ async function handler(ctx, next) {
     ctx.log = log;
 
     const { request, response } = ctx;
-    log.info(`Request for ${ctx.URL.href}`);
+    log.debug(`Request for ${ctx.URL.href}`);
     log.debug(request.header, 'Request headers');
     if (request.body) {
         log.trace(ctx.request.body, 'Request body');
@@ -54,7 +54,7 @@ async function handler(ctx, next) {
     const responseTimeStr = responseTime
         ? ` in ${responseTime}`
         : '';
-    log.info({ res: ctx.res }, `Request for ${ctx.URL.href} completed${responseTimeStr}`);
+    log.debug({ res: ctx.res }, `Request for ${ctx.URL.href} completed${responseTimeStr}`);
 }
 
 module.exports = () => ({
