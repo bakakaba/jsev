@@ -1,6 +1,7 @@
 import { ParameterizedContext, Response } from "koa";
 import * as shortId from "shortid";
 
+import { Environment } from "../Environment";
 import { UnauthorizedError, ValidationError } from "../errors";
 import { Logger } from "../logging";
 import { getPropertyByNameIgnoreCase } from "../utilities";
@@ -31,7 +32,7 @@ function handleError(log: Logger, response: Response, error: Error) {
 }
 
 async function handler(
-  ctx: ParameterizedContext<any, {}>,
+  ctx: ParameterizedContext<any, { env: Environment; log: Logger }>,
   next: () => Promise<any>,
 ) {
   const reqId =

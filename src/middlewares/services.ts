@@ -21,45 +21,42 @@ export default (env: Environment) => {
 
   const { log } = env;
   const serviceModules = exportModulesSync<IServiceFactory<object>>(cfg.path);
-  const services = Object.entries(serviceModules).reduce(
-    (a, x) => {
-      const [svcName, svcLoader] = x;
+  const services = Object.entries(serviceModules).reduce((a, x) => {
+    const [svcName, svcLoader] = x;
 
-      if (!isFunction(svcLoader.init)) {
-        log.warn(`No init function found for ${svcName}`);
-        return a;
-      }
-
-      const svc = svcLoader.init(env);
-      if (!svc) {
-        log.debug(`${svcName} was not loaded`);
-        return a;
-      }
-
-      a[svcName] = svc;
-      log.info(`Loaded ${svcName}`);
-
+    if (!isFunction(svcLoader.init)) {
+      log.warn(`No init function found for ${svcName}`);
       return a;
-    },
-    {} as IObject<any>,
-  );
+    }
+
+    const svc = svcLoader.init(env);
+    if (!svc) {
+      log.debug(`${svcName} was not loaded`);
+      return a;
+    }
+
+    a[svcName] = svc;
+    log.info(`Loaded ${svcName}`);
+
+    return a;
+  }, {} as IObject<any>);
 
   return {
-    func: (ctx: ParameterizedContext<any, {}>, next: () => Promise<any>) => {
-      ctx.services = Object.entries(services).reduce(
-        (a, x) => {
-          const [name, Svc] = x;
-          try {
-            a[name] = new Svc(ctx);
-          } catch (err) {
-            err.message = `Failed to load ${name}`;
-            throw err;
-          }
+    func: (
+      ctx: ParameterizedContext<any, { services: any }>,
+      next: () => Promise<any>,
+    ) => {
+      ctx.services = Object.entries(services).reduce((a, x) => {
+        const [name, Svc] = x;
+        try {
+          a[name] = new Svc(ctx);
+        } catch (err) {
+          err.message = `Failed to load ${name}`;
+          throw err;
+        }
 
-          return a;
-        },
-        {} as IObject<any>,
-      );
+        return a;
+      }, {} as IObject<any>);
 
       return next();
     },
