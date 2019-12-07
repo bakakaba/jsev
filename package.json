@@ -4,7 +4,7 @@
   "description": "Environment for building Web API's.",
   "main": "lib/index.js",
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "scripts": {
     "clean": "rm -rf node_modules && rm package-lock.json && rm -rf lib",
@@ -15,7 +15,7 @@
     "test": "jest --watch",
     "prepare": "npm run build",
     "prepublishOnly": "npm run lint && jest --coverage",
-    "postversion": "git push && git push --tags"
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
@@ -32,47 +32,49 @@
   },
   "homepage": "https://github.com/cruz82/jsev#readme",
   "dependencies": {
-    "@graphql-modules/core": "^0.7.7",
+    "@graphql-modules/core": "^0.7.13",
     "@koa/cors": "^3.0.0",
     "@types/bunyan": "^1.8.6",
-    "@types/graphql": "^14.2.2",
+    "@types/graphql": "^14.5.0",
     "@types/koa-router": "^7.0.42",
-    "apollo-server-koa": "^2.6.9",
+    "apollo-server-koa": "^2.9.13",
     "bunyan": "^1.8.12",
     "callsites": "^3.1.0",
-    "chalk": "^2.4.2",
-    "change-case": "^3.1.0",
-    "graphql": "^14.4.2",
+    "chalk": "^3.0.0",
+    "change-case": "^4.1.0",
+    "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
-    "graphql-tag-pluck": "^0.8.3",
+    "graphql-tag-pluck": "^0.8.7",
     "jwks-rsa": "^1.6.0",
-    "koa": "^2.7.0",
+    "koa": "^2.11.0",
     "koa-jwt": "^3.6.0",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "lodash": "^4.17.14",
     "reflect-metadata": "^0.1.13",
-    "shortid": "^2.2.14",
-    "source-map-support": "^0.5.12"
+    "shortid": "^2.2.15",
+    "source-map-support": "^0.5.16"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
     "@types/glob": "^7.1.1",
-    "@types/jest": "^24.0.15",
-    "@types/koa": "^2.0.49",
-    "@types/koa__cors": "^2.2.3",
+    "@types/jest": "^24.0.23",
+    "@types/koa": "^2.11.0",
     "@types/koa-static": "^4.0.1",
-    "@types/lodash": "^4.14.136",
-    "@types/node": "^12.6.2",
+    "@types/koa__cors": "^2.2.3",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^12.12.14",
     "@types/shortid": "0.0.29",
     "@types/source-map-support": "^0.5.0",
     "app-module-path": "^2.2.0",
-    "husky": "^3.0.0",
-    "jest": "^24.8.0",
-    "lint-staged": "^9.2.0",
-    "prettier": "^1.18.2",
-    "ts-jest": "^24.0.2",
-    "tslint": "^5.18.0",
-    "typescript": "^3.5.3"
+    "husky": "^3.1.0",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.5.0",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.2.0",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.3"
   },
   "prettier": {
     "arrowParens": "always",
@@ -97,6 +99,7 @@
   },
   "husky": {
     "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged && npm run prepublishOnly"
     }
   },
