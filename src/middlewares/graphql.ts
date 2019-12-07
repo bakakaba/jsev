@@ -121,7 +121,7 @@ export default async (env: Environment) => {
   const server = new ApolloServer({
     context,
     formatError: (err) => {
-      env.log.error(err);
+      env.log.error(err.originalError);
       return err;
     },
     schema,
