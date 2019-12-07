@@ -118,7 +118,14 @@ export default async (env: Environment) => {
   });
 
   const { schema, context } = appModule;
-  const server = new ApolloServer({ schema, context });
+  const server = new ApolloServer({
+    context,
+    formatError: (err) => {
+      env.log.error(err);
+      return err;
+    },
+    schema,
+  });
 
   return {
     apply: () => server.applyMiddleware({ app: env.app }),
